@@ -10,14 +10,26 @@ const PORT = 5600
 
 app.use(express.static(path.join(__dirname, 'frontend', 'public')))
 
-
+// serve
 app.use('/', express.static(
   path.join(
     __dirname,
     'frontend',
-    'public')
+    'public',
+    'views'
+  )
 )
 )
+
+
+// enpoints
+app.use('/movies', (req, res, next) => {
+
+})
+app.use('/bookings', (req, res, next) => {
+
+})
+
 
 
 app.listen(PORT, () => {
