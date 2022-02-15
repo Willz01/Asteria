@@ -8,9 +8,9 @@ const app = express()
 app.use(express.json())
 const PORT = 5600
 
-app.use(express.static(path.join(__dirname, 'frontend', 'public')))
+app.use(express.static(path.join(__dirname, '../', 'frontend', 'public')))
 
-// serve
+// serve --test
 app.use('/', express.static(
   path.join(
     __dirname,
