@@ -22,13 +22,12 @@ app.use('/', express.static(
 )
 
 
-// enpoints
-app.use('/movies', (req, res, next) => {
+// enpoints --routes
+const moviesRouter = require('./router/moviesrouter')
+app.use('/movies', moviesRouter)
 
-})
-app.use('/bookings', (req, res, next) => {
-
-})
+const bookingsRouter = require('./router/bookingrouter')
+app.use('/bookings', bookingsRouter)
 
 
 
