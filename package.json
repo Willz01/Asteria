@@ -1,0 +1,29 @@
+{
+  "name": "asteria",
+  "version": "1.0.0",
+  "description": "Theatre movies booking web project for Software Development for the Web, HKR.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Willz01/Asteria.git"
+  },
+  "keywords": [
+    "agile",
+    "project",
+    "node"
+  ],
+  "author": "Group Asteria",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Willz01/Asteria/issues"
+  },
+  "homepage": "https://github.com/Willz01/Asteria#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
