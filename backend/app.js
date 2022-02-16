@@ -8,34 +8,43 @@ const app = express()
 app.use(express.json())
 const PORT = 5600
 
-app.use(express.static(path.join(__dirname, '../', 'frontend', 'public')))
-
-// serve --test
-app.use('/', express.static(
-  path.join(
-    __dirname,
+// served pages '/start', '/bookings', '/signUp'
+app.use('/start', (req, res) => {
+  res.sendFile(path.join(
+    __dirname, '../',
     'frontend',
     'public',
-    'views'
-  )
-)
-)
+    'views', 'start.html'
+  ))
+})
+
+app.use('/bookings', (req, res) => {
+  res.sendFile(path.join(
+    __dirname, '../',
+    'frontend',
+    'public',
+    'views', 'bookings.html'
+  ))
+})
+
+app.use('/signUp', (req, res) => {
+  res.sendFile(path.join(
+    __dirname, '../',
+    'frontend',
+    'public',
+    'views', 'signUp.html'
+  ))
+})
 
 
-// enpoints --routes
+//* enpoints --routes
 
 // ':id', '/'--all
 const moviesRouter = require('./router/moviesrouter')
 app.use('/api/movies', moviesRouter)
 
-
-// '/current', '/previous' & '/:id' booking
-// const bookingsRouter = require('./router/bookingrouter')
-// app.use('/api/bookings', bookingsRouter)
-
 const userRouter = require('./router/userrouter')
 app.use('/api/users', userRouter)
-
 
 
 app.listen(PORT, () => {
