@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const sqlite = require('better-sqlite3')
-const db = sqlite(process.nextTick.SQLITE_URL)
+const db = sqlite(process.env.SQLITE_URL)
 
 
 function getMovieById(req, res, next) {
