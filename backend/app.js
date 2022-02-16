@@ -8,6 +8,9 @@ const app = express()
 app.use(express.json())
 const PORT = 5600
 
+
+app.use(express.static(path.join(__dirname, '../', 'frontend', 'public')))
+
 // served pages '/start', '/bookings', '/signUp'
 app.use('/start', (req, res) => {
   res.sendFile(path.join(
