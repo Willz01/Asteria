@@ -1,11 +1,20 @@
 const express = require('express')
-const getOldBookings = require('../services/bookingservice')
+
 const router = express.Router()
-const getCurrentBookings = require('../services/bookingservice')
+const bookingServices = require('../services/bookingservices')
 
 
-router.get('/current', getCurrentBookings)
 
-router.get('/previous', getOldBookings)
+router.get('/current', bookingServices.getCurrentBoookings)
+
+router.get('/previous', bookingServices.getPreviousBookings)
+
+router.get('/:id', bookingServices.getBookingById)
+
+router.post('/new-booking', bookingServices.newBooking)
+
+router.put('/:id', bookingServices.editBooking)
+
+router.delete('/:id', bookingServices.deleteBooking)
 
 module.exports = router
