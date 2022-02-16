@@ -9,7 +9,7 @@ function getMovieById(req, res, next) {
 }
 
 function getAllMovies(req, res, next) {
-
+  res.send({ testALL: 'movies' })
 }
 
 exports.getMovieById = getMovieById
