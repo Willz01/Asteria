@@ -33,6 +33,7 @@ function makeMenuChoiceActive(route) {
 
 async function router() {
   let route = location.pathname;
+  console.log(route);
   makeMenuChoiceActive(route);
   // transform route to be a path to a partial
   route = route === '/' ? '/start' : route;
@@ -45,7 +46,8 @@ async function router() {
   document.querySelector('main').innerHTML = content;
   // run the productLister function (in another file)
   // if the route is '/partials/products.html';
-  route === '/views/.html' && loadJsonAndDisplayProducts();
+  route === '/views/bookings.html';
+  route === '/views/signUp.html';
 }
 
 // runt the router when using the back/forward buttons

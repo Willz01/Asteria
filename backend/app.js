@@ -24,7 +24,6 @@ app.use('/start', (req, res) => {
 //   res.sendFile(path.join(
 //     __dirname, '../',
 //     'frontend',
-//     'public',
 //     'views', 'bookings.html'
 //   ))
 // })
