@@ -9,35 +9,34 @@ app.use(express.json())
 const PORT = 5600
 
 
-app.use(express.static(path.join(__dirname, '../', 'frontend', 'public')))
+app.use(express.static(path.join(__dirname, '../', 'frontend')))
 
 // served pages '/start', '/bookings', '/signUp'
 app.use('/start', (req, res) => {
   res.sendFile(path.join(
     __dirname, '../',
     'frontend',
-    'public',
-    'views', 'start.html'
+    'index.html'
   ))
 })
 
-app.use('/bookings', (req, res) => {
-  res.sendFile(path.join(
-    __dirname, '../',
-    'frontend',
-    'public',
-    'views', 'bookings.html'
-  ))
-})
+// app.use('/bookings', (req, res) => {
+//   res.sendFile(path.join(
+//     __dirname, '../',
+//     'frontend',
+//     'public',
+//     'views', 'bookings.html'
+//   ))
+// })
 
-app.use('/signUp', (req, res) => {
-  res.sendFile(path.join(
-    __dirname, '../',
-    'frontend',
-    'public',
-    'views', 'signUp.html'
-  ))
-})
+// app.use('/signUp', (req, res) => {
+//   res.sendFile(path.join(
+//     __dirname, '../',
+//     'frontend',
+//     'public',
+//     'views', 'signUp.html'
+//   ))
+// })
 
 
 //* enpoints --routes

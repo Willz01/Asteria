@@ -8,13 +8,14 @@
 
 body {
   background-color: rgb(45, 45, 45);
-  background-image: url('../images/space.jpeg');
+  background-image: url('../public/images/space.jpeg');
   background-size: cover;
   background-attachment: fixed;
   background-position: center center;
   padding: 0 20%;
   -ms-overflow-style: none;
   scrollbar-width: none; 
+  flex: 1;
 }
 
 body::-webkit-scrollbar {
@@ -24,6 +25,10 @@ body::-webkit-scrollbar {
 .heading {
   padding-top: 50px;
   width: 100%;
+}
+
+main {
+  flex: 1;
 }
 
 .heading h1 {
@@ -42,11 +47,16 @@ body::-webkit-scrollbar {
   text-align: center;
 }
 
-.navigation h2 {
+.navigation a {
+  text-decoration: none;
   text-align: center;
   font-size: 20px;
   color: white;
   font-family: 'Montserrat';
+}
+
+nav .active {
+  color: rgb(255, 225, 0);
 }
 
 .movie-cards {
@@ -100,12 +110,17 @@ footer {
   justify-content: center;
   align-items: center;
   padding: 20px;
+  flex-direction: column;
 }
 
 footer h3 {
   font-family: 'Montserrat';
   font-size: 15px;
   color: rgb(255, 225, 0);
+}
+
+footer address {
+  color: white;
 }
 
 @media only screen and (max-width: 480px) {
