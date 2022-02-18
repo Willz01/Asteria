@@ -1,12 +1,20 @@
 # Asteria
 Theatre movies booking web project for Software Development for the Web, HKR.
-
-### Setup 
-> $ cd backend
+----------------------------
+### Setup backend (API)
+> `$ cd backend`
 > 
-> npm install
+> `npm install`
 
 ### Run 'nodemon start script'
-> npm start 
+> `npm start` 
+------------------------------
+### Setup frontend (Web page)
+> `$ cd frontend`
 > 
-> Index page served at http://127.0.0.1:5600/
+> `npm install`
+
+### Run 'nodemon start script'
+> `npm start` 
+>
+> Index page served at http://127.0.0.1:5601/
