@@ -19,6 +19,7 @@ document.querySelector('body').addEventListener('click', function (event) {
   router();
 });
 
+
 function makeMenuChoiceActive(route) {
   // change active link in the menu
   let aTagsInNav = document.querySelectorAll('nav a');
@@ -49,6 +50,7 @@ async function router() {
   route === '/views/bookings.html';
   route === '/views/signUp.html';
 }
+
 
 // runt the router when using the back/forward buttons
 window.addEventListener('popstate', router);
