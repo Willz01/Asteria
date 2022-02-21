@@ -50,6 +50,7 @@ async function router() {
   route === '/views/start.html' && fillMovieCards();
   route === '/views/bookings.html';
   route === '/views/signUp.html';
+  route === '/views/newbooking.html' && loadAndDisplayTheSeats();
 }
 
 
