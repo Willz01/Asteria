@@ -47,6 +47,7 @@ async function router() {
   document.querySelector('main').innerHTML = content;
   // run the productLister function (in another file)
   // if the route is '/partials/products.html';
+  route === '/views/start.html' && fillMovieCards();
   route === '/views/bookings.html';
   route === '/views/signUp.html';
   route === '/views/newbooking.html' && loadAndDisplayTheSeats();
