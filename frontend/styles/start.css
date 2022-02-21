@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Monoton&family=Montserrat:ital,wght@0,300;0,500;0,600;0,700;1,300&display=swap');
 
+/* Body */
 * {
   margin: 0;
   padding: 0;
@@ -7,28 +8,34 @@
 }
 
 body {
+  display: flex;
   background-color: rgb(45, 45, 45);
   background-image: url('../public/images/space.jpeg');
   background-size: cover;
   background-attachment: fixed;
   background-position: center center;
-  padding: 0 20%;
+  flex-direction: column;
   -ms-overflow-style: none;
+  min-height: 100vh;
   scrollbar-width: none; 
-  flex: 1;
 }
 
 body::-webkit-scrollbar {
   display: none;
 }
 
-.heading {
-  padding-top: 50px;
-  width: 100%;
+/* Main */
+main {
+  padding: 0 20%;
+  width: auto;
+  flex: 1;
 }
 
-main {
-  flex: 1;
+/* Header */
+.heading {
+  padding: 0 20%;
+  padding-top: 50px;
+  width: 100%;
 }
 
 .heading h1 {
@@ -59,6 +66,7 @@ nav .active {
   color: rgb(255, 225, 0);
 }
 
+/* Start */
 .movie-cards {
   display: flex;
   flex-direction: column;
@@ -105,12 +113,126 @@ nav .active {
   padding-right: 10px;
 }
 
-footer {
+/* New Booking */
+.new_booking {
+  width: auto;
+  background-color: black;
+  opacity: 0.90;
+  border: 2px solid rgb(131, 131, 131);;
+  height: 100%;
+  color: white;
+  margin: 2%;
+  border-radius: 5px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
   flex-direction: column;
+}
+
+.new_booking__header {
+  display: grid;
+}
+
+.new_booking__header h1 {
+  font-size: 40px;
+  align-items: center;
+  text-align: center;
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.new_booking__header h2 {
+  font-size: 30px;
+  padding: 10px;
+  margin: 5px 2%;
+  margin-bottom: 10px;
+  text-align: left;
+  border-bottom: 1px solid white;
+  grid-column-start: 1;
+  grid-column-end: 7;
+}
+
+.new_booking__header h3 {
+  align-self: baseline;
+  font-size: 25px;
+  padding-top: 40px;
+  padding-right: 30px;
+  margin-top: 20px;
+  margin: 5px 2%;
+  text-align: right;
+  grid-column-start: 7;
+  grid-column-end: 12;
+}
+
+.new_booking__header p {
+  align-self: center;
+  text-align: left;
+  grid-column: 2;
+}
+
+.ticket_seat_selection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ticket_selection {
+  display: flex;
+  flex-direction: column;
+  padding: 2% 5%;
+  grid-template-columns: 3;
+}
+
+.ticket {
+  display: grid;
+  width: 20%;
+  grid-template-columns: 8;
+  align-items: center;
+}
+
+.ticket h1 {
+  font-size: 30px;
+  padding: 5px;
+  margin: 5px;
+  text-align: right;
+  grid-column-start: 1;
+  grid-column-end: 5;
+}
+
+.ticket_button_less {
+  padding: 3px;
+  margin: 2px;
+  width: 20px;
+  height: 20px;
+  grid-column-start: 6;
+  grid-column-end: 7;
+}
+
+.ticket_button_more {
+  padding: 3px;
+  margin: 2px;
+  width: 20px;
+  height: 20px;
+  grid-column-start: 7;
+  grid-column-end: 8;
+}
+
+.seats_container {
+  align-self: flex-start;
+  padding: auto;
+  margin: 1%;
+  width: 79%;
+  height: 50vh;
+  border-radius: 5px;
+  background-color: gray;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: rgb(45, 45, 45);
+  width: auto;
 }
 
 footer h3 {
@@ -123,12 +245,14 @@ footer address {
   color: white;
 }
 
-@media only screen and (max-width: 480px) {
-
-  body {
+@media only screen and (max-width: 900px) {
+  /* Main */
+  main {
+    
     padding: 0 20px;
   }
 
+  /* Header */
   .heading h1 {
     font-size: 40px;
   }
@@ -137,6 +261,7 @@ footer address {
     font-size: 15px;
   }
 
+  /* Start */
   .movie-card {
     margin: 10px;
     max-height: 150px;
@@ -154,7 +279,31 @@ footer address {
   .movie-card img {
     width: 70px;
   }
+  
 
+  /* New Booking */
+  .new_booking__header h1 {
+  font-size: 24px;
+  padding: 10px;
+  margin: 5px 2%;
+  text-align: left;
+  border-bottom: 1px solid white;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.new_booking__header h2 {
+  font-size: 15px;
+  padding-top: 10px;
+  padding-right: 10px;
+  margin-top: 20px;
+  margin: 5px 2%;
+  text-align: right;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+  /* Footer */
   footer h3 {
     font-size: 11px;
   }

@@ -49,6 +49,7 @@ async function router() {
   // if the route is '/partials/products.html';
   route === '/views/bookings.html';
   route === '/views/signUp.html';
+  route === '/views/newbooking.html' && loadAndDisplayTheSeats();
 }
 
 
