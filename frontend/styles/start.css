@@ -1,72 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Monoton&family=Montserrat:ital,wght@0,300;0,500;0,600;0,700;1,300&display=swap');
 
-/* Body */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  display: flex;
-  background-color: rgb(45, 45, 45);
-  background-image: url('../public/images/space.jpeg');
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center center;
-  flex-direction: column;
-  -ms-overflow-style: none;
-  min-height: 100vh;
-  scrollbar-width: none; 
-}
-
-body::-webkit-scrollbar {
-  display: none;
-}
-
-/* Main */
-main {
-  padding: 0 20%;
-  width: auto;
-  flex: 1;
-}
-
-/* Header */
-.heading {
-  padding: 0 20%;
-  padding-top: 50px;
-  width: 100%;
-}
-
-.heading h1 {
-  text-align: center;
-  font-family: 'Monoton';
-  color: rgb(255, 225, 0);
-  font-size: 64px;
-  padding-bottom: 20px;
-}
-
-.navigation {
-  width: 80%;
-  margin: 0 auto; 
-  display: flex;
-  justify-content: space-around;
-  text-align: center;
-}
-
-.navigation a {
-  text-decoration: none;
-  text-align: center;
-  font-size: 20px;
-  color: white;
-  font-family: 'Montserrat';
-}
-
-nav .active {
-  color: rgb(255, 225, 0);
-}
-
-/* Start */
 .movie-cards {
   display: flex;
   flex-direction: column;
@@ -228,41 +161,8 @@ nav .active {
   background-color: gray;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 20px;
-  margin-top: 30px;
-  padding: 20px;
-  background-color: rgb(45, 45, 45);
-  width: auto;
-}
 
-footer h3 {
-  font-family: 'Montserrat';
-  font-size: 15px;
-  color: rgb(255, 225, 0);
-}
-
-footer address {
-  color: white;
-}
-
-@media only screen and (max-width: 900px) {
-  /* Main */
-  main {
-    
-    padding: 0 20px;
-  }
-
-  /* Header */
-  .heading h1 {
-    font-size: 40px;
-  }
-
-  .navigation h2 {
-    font-size: 15px;
-  }
+@media only screen and (max-width: 480px) {
 
   /* Start */
   .movie-card {
@@ -305,8 +205,4 @@ footer address {
   grid-column-end: 3;
 }
 
-  /* Footer */
-footer h3 {
-    font-size: 11px;
-  }
 }

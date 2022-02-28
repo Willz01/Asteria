@@ -7,28 +7,32 @@
 }
 
 body {
+  display: flex;
   background-color: rgb(45, 45, 45);
   background-image: url('../public/images/space.jpeg');
   background-size: cover;
   background-attachment: fixed;
   background-position: center center;
-  padding: 0 20%;
+  flex-direction: column;
   -ms-overflow-style: none;
+  min-height: 100vh;
   scrollbar-width: none; 
-  flex: 1;
 }
 
 body::-webkit-scrollbar {
   display: none;
 }
 
-.heading {
-  padding-top: 50px;
-  width: 100%;
+main {
+  padding: 0 20%;
+  width: auto;
+  flex: 1;
 }
 
-main {
-  flex: 1;
+.heading {
+  padding: 0 20%;
+  padding-top: 50px;
+  width: 100%;
 }
 
 .heading h1 {
@@ -78,8 +82,8 @@ footer address {
 }
 
 @media only screen and (max-width: 480px) {
-
-  body {
+ 
+  main {
     padding: 0 20px;
   }
 
@@ -87,12 +91,11 @@ footer address {
     font-size: 40px;
   }
 
-  .navigation a {
+  .navigation h2 {
     font-size: 15px;
   }
 
-  footer h3 {
+ footer h3 {
     font-size: 11px;
   }
-
 }
