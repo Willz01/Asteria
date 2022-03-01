@@ -7,28 +7,32 @@
 }
 
 body {
+  display: flex;
   background-color: rgb(45, 45, 45);
   background-image: url('../public/images/space.jpeg');
   background-size: cover;
   background-attachment: fixed;
   background-position: center center;
-  padding: 0 20%;
+  flex-direction: column;
   -ms-overflow-style: none;
+  min-height: 100vh;
   scrollbar-width: none; 
-  flex: 1;
 }
 
 body::-webkit-scrollbar {
   display: none;
 }
 
-.heading {
-  padding-top: 50px;
-  width: 100%;
+main {
+  padding: 0 20%;
+  width: auto;
+  flex: 1;
 }
 
-main {
-  flex: 1;
+.heading {
+  padding: 0 20%;
+  padding-top: 50px;
+  width: 100%;
 }
 
 .heading h1 {
@@ -47,7 +51,7 @@ main {
   text-align: center;
 }
 
-.navigation a {
+.navigation a, .dropdown {
   text-decoration: none;
   text-align: center;
   font-size: 20px;
@@ -59,12 +63,44 @@ nav .active {
   color: rgb(255, 225, 0);
 }
 
+.dropdown {
+  position: relative;
+  display: inline-block;
+  color: white;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  width: 110px;
+  background-color: rgb(29, 29, 29);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 5px;
+  text-align: center;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  color: rgb(255, 225, 0);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
   padding: 20px;
-  flex-direction: column;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: rgb(45, 45, 45);
+  width: auto;
 }
 
 footer h3 {
@@ -78,8 +114,8 @@ footer address {
 }
 
 @media only screen and (max-width: 480px) {
-
-  body {
+ 
+  main {
     padding: 0 20px;
   }
 
@@ -87,12 +123,11 @@ footer address {
     font-size: 40px;
   }
 
-  .navigation a {
+  .navigation h2 {
     font-size: 15px;
   }
 
-  footer h3 {
+ footer h3 {
     font-size: 11px;
   }
-
 }

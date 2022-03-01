@@ -7,7 +7,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Asteria: Start</title>
+  <link rel="stylesheet" href="./styles/style.css">
   <link rel="stylesheet" href="./styles/start.css">
+  <link rel="stylesheet" href="./styles/findScreening.css">
 </head>
 
 <body>
@@ -15,7 +17,12 @@
     <h1>ASTERIA</h1>
     <nav class="navigation">
       <a class="active" href="/">START</a>
-      <a href="/bookings">BOOKINGS</a>
+      <div class="dropdown">BOOKINGS
+        <div class="dropdown-content">
+          <a href="/bookings">MY BOOKINGS</a>
+          <a href="/findScreening">MAKE A BOOKING</a>
+        </div>
+      </div>
       <a href="/signUp">SIGN IN</a>
       <a href="/newbooking">New Booking</a>
     </nav>
