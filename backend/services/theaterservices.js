@@ -3,15 +3,17 @@ require('dotenv').config()
 const sqlite = require('better-sqlite3')
 const db = sqlite(process.env.SQLITE_URL)
 
-function getUserById(req, res) {
-  runQuery(res, req.params.userId,
-    `SELECT * FROM users WHERE id = ${req.params.id}`, true);
-  res.send({ userId: req.params.userId })
+
+function getTheaterById(req, res, next) {
+  runQuery(res, req.params.id,
+    `SELECT * FROM movies WHERE id = ${req.params.id}`, true);
+  res.send({ theaterID: req.params.id })
 }
 
-function getAllUsers(req, res) {
+function getAllTheaters(req, res, next) {
   runQuery(res, {},
-    `SELECT * FROM users`, false);
+    `SELECT * FROM theaters`, false);
+  res.send({ testALL: 'theaters' })
 }
 
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
@@ -33,6 +35,5 @@ function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
   res.json(result);
 }
 
-exports.getUserById = getUserById
-exports.getAllUsers = getAllUsers
-
+exports.getTheaterById = getTheaterById
+exports.getAllTheaters = getAllTheaters

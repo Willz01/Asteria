@@ -1,3 +1,4 @@
+const { request, response } = require('express')
 const express = require('express')
 const router = express.Router()
 
@@ -6,14 +7,14 @@ const bookingRouter = require('./bookingrouter')
 
 
 // '/users/:id'
-router.get('/:userId', userServices.getUserById)
+router.get('/:id', userServices.getUserById)
 
 // '/users' --admin
 router.get('/', userServices.getAllUsers)
 
 
-// '/users/:userId/bookings' -- booking router
-router.use('/:userId/bookings', bookingRouter)
+// '/users/:id/bookings' -- booking router
+router.use('/:id/bookings', bookingRouter)
 
 
 module.exports = router
