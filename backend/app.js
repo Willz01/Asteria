@@ -49,6 +49,11 @@ app.use('/api/movies', moviesRouter)
 const userRouter = require('./router/userrouter')
 app.use('/api/users', userRouter)
 
+const theaterRouter = require('./router/theaterrouter')
+app.use('/api/theaters', theaterRouter)
+
+const bookingRouter = require('./router/bookingrouter')
+app.use('/api/bookings', bookingRouter)
 
 app.listen(PORT, () => {
   console.log(`Asteria server running @ PORT: ${PORT}`);
