@@ -7,14 +7,14 @@ const bookingRouter = require('./bookingrouter')
 
 
 // '/users/:id'
-router.get('/:userId', userServices.getUserById(request, response))
+router.get('/:id', userServices.getUserById)
 
 // '/users' --admin
-router.get('/', userServices.getAllUsers(request, response))
+router.get('/', userServices.getAllUsers)
 
 
-// '/users/:userId/bookings' -- booking router
-router.use('/:userId/bookings', bookingRouter)
+// '/users/:id/bookings' -- booking router
+router.use('/:id/bookings', bookingRouter)
 
 
 module.exports = router

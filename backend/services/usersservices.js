@@ -5,14 +5,13 @@ const db = sqlite(process.env.SQLITE_URL)
 
 function getUserById(req, res) {
   runQuery(res, req.params.userId,
-    `SELECT * FROM users WHERE id = ${req.params.userId}`, true);
+    `SELECT * FROM users WHERE id = ${req.params.id}`, true);
   res.send({ userId: req.params.userId })
 }
 
 function getAllUsers(req, res) {
   runQuery(res, {},
     `SELECT * FROM users`, false);
-  res.send({ user })
 }
 
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
