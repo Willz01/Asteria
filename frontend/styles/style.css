@@ -94,6 +94,14 @@ nav .active {
   display: block;
 }
 
+.account-section {
+  background-color: rgb(45, 45, 45);
+}
+
+.account-section label, div {
+  color: white;
+}
+
 footer {
   text-align: center;
   padding: 20px;

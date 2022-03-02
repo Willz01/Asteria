@@ -5,8 +5,9 @@ const db = sqlite(process.env.SQLITE_URL)
 
 function getUserById(req, res, next) {
   console.log(req.body);
-  runQuery(res, req.params.userId,
-    `SELECT * FROM users WHERE password = ${req.params.id}`, true);
+  res.send(req.body)
+  /* runQuery(res, req.params.userId,
+    `SELECT * FROM users WHERE password = ${req.params.id}`, true); */
 }
 
 function getAllUsers(req, res, next) {
@@ -17,6 +18,7 @@ function getAllUsers(req, res, next) {
 function newUser(req, res, next) {
   console.log('new user');
   console.log(req.body);
+  res.send(req.body)
 }
 
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {

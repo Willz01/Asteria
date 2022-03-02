@@ -2,9 +2,9 @@
 const API_URL_SIGN_UP = 'http://127.0.0.1:5600/api/users/signUp'
 const API_URL_SIGN_IN = 'http://127.0.0.1:5600/api/users/signIn'
 
-document.querySelector('#logout').addEventListener('click', () => {
+/* document.querySelector('#logout').addEventListener('click', () => {
   window.location.href = "/"
-})
+}) */
 
 var c = 1
 function toogle() {
@@ -21,16 +21,31 @@ function toogle() {
     c++
   }
 }
+
 function hideUN() {
   toogle()
 }
 
-function handleAccount() {
+document.getElementById('sign-thing').addEventListener('click', () => {
 
+  var text = document.getElementById('sign-thing').innerText
+  if (text == 'SIGN OUT') {
+    // clear session
+    clearSession()
+    // return to home page
+    window.location.href = '/'
+  } else {
+    // redirect to sign UP/sign IN
+    window.location.href = '/signUp'
+  }
+})
+
+function handleAccount() {
   console.log('Sign Up Page')
   document.getElementById('form').addEventListener('submit', (event) => {
     event.preventDefault()
     console.log('Form clicked');
+
     let data = new FormData(document.getElementById('form'))
 
     let email = data.get('email')
@@ -39,17 +54,37 @@ function handleAccount() {
 
     // sign IN
     if (userName === 'empty') {
-      postData(API_URL_SIGN_IN, {
+      console.log('logged in');
+      var auth = {
         email: email,
-        password: password
+        password: btoa(password)
+      }
+
+      let result = postData(API_URL_SIGN_IN, {
+        email: email,
+        password: btoa(password)
       })
+      if (result === null) {
+        alert('Invalid Login credentials')
+      } else {
+        // sucess
+        saveSession(auth)
+        window.location.href = '/'
+      }
+
     } else {  // sign Up
       console.log("POSTING SIGN UP");
-      postData(API_URL_SIGN_UP, {
+      var auth = {
         email: email,
         userName: userName,
-        password: password
-      })
+        password: btoa(password)
+      }
+      let r = postData(API_URL_SIGN_UP, auth)
+      if (r) {
+        saveSession(auth)
+
+        window.location.href = '/signUp'
+      }
     }
 
     console.log(email, userName, password);
