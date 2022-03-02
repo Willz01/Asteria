@@ -1,0 +1,11 @@
+.account-section {
+  display: flex;
+  align-items: center;
+  min-height: 150px;
+  max-width: 100%;
+  background-color: rgb(45, 45, 45);
+  border-radius: 3px;
+  border: 1.5px solid rgb(131, 131, 131);
+  margin: 20px;
+  background-color: wheat;
+}

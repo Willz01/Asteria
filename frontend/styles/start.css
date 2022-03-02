@@ -24,7 +24,7 @@
   height: 100%;
 }
 
-.movie-card h2, p{
+.movie-card h2, p {
   color: white;
   font-family: 'Montserrat';
 }
@@ -41,7 +41,7 @@
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
- 
+
 .movie-card img {
   width: 100px;
   height: auto;
@@ -54,7 +54,8 @@
   width: auto;
   background-color: black;
   opacity: 0.90;
-  border: 2px solid rgb(131, 131, 131);;
+  border: 2px solid rgb(131, 131, 131);
+  ;
   height: 100%;
   color: white;
   margin: 2%;
@@ -185,24 +186,24 @@
 
   /* New Booking */
   .new_booking__header h1 {
-  font-size: 24px;
-  padding: 10px;
-  margin: 5px 2%;
-  text-align: left;
-  border-bottom: 1px solid white;
-  grid-column-start: 1;
-  grid-column-end: 3;
-}
+    font-size: 24px;
+    padding: 10px;
+    margin: 5px 2%;
+    text-align: left;
+    border-bottom: 1px solid white;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
 
-.new_booking__header h2 {
-  font-size: 15px;
-  padding-top: 10px;
-  padding-right: 10px;
-  margin-top: 20px;
-  margin: 5px 2%;
-  text-align: right;
-  grid-column-start: 1;
-  grid-column-end: 3;
-}
+  .new_booking__header h2 {
+    font-size: 15px;
+    padding-top: 10px;
+    padding-right: 10px;
+    margin-top: 20px;
+    margin: 5px 2%;
+    text-align: right;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
 
 }

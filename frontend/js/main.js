@@ -52,6 +52,7 @@ async function router() {
   route === '/views/findScreening.html';
   route === '/views/signUp.html';
   route === '/views/newbooking.html' && loadAndDisplayTheSeats();
+  route === '/views/signUp.html' && handleAccount();
 }
 
 
