@@ -83,7 +83,7 @@ function handleAccount() {
       if (r) {
         saveSession(auth)
 
-        window.location.href = '/signUp'
+        window.location.href = '/'
       }
     }
 

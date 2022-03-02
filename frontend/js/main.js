@@ -60,6 +60,7 @@ async function router() {
 if (isSavedSession()) {
   console.log(getSavedSession());
   document.getElementById('sign-thing').innerText = 'SIGN OUT'
+  document.getElementById('sign-thing').style.color = 'red'
 } else {
   console.log('No saved session');
   document.getElementById('sign-thing').innerText = 'SIGN UP/IN'
