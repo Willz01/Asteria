@@ -47,7 +47,6 @@ async function loadJsonAndDisplayTheSeats() {
     const seat = 0;
     seats.push(seat)
 
-    if ()
   }
 
   //here

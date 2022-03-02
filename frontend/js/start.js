@@ -541,3 +541,5 @@ function fillMovieCards() {
 
   document.querySelector('.movie-cards').innerHTML = html;
 }
+
+

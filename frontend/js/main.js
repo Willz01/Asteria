@@ -1,3 +1,5 @@
+
+
 document.querySelector('body').addEventListener('click', function (event) {
   let aTag = event.target.closest('a');
 
@@ -52,8 +54,18 @@ async function router() {
   route === '/views/findScreening.html';
   route === '/views/signUp.html';
   route === '/views/newbooking.html' && loadAndDisplayTheSeats();
+  route === '/views/signUp.html' && handleAccount();
 }
 
+if (isSavedSession()) {
+  console.log(getSavedSession());
+  document.getElementById('sign-thing').innerText = 'SIGN OUT'
+} else {
+  console.log('No saved session');
+  document.getElementById('sign-thing').innerText = 'SIGN UP/IN'
+  // document.getElementById('sign-thing').style.color = 'white'
+}
+console.log(isSavedSession());
 
 // runt the router when using the back/forward buttons
 window.addEventListener('popstate', router);
