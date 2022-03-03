@@ -14,6 +14,16 @@ function getAllUsers(req, res) {
     `SELECT * FROM users`, false);
 }
 
+function postNewUser(req, res) {
+  delete req.body.id;
+
+  runQuery(res, req.body,
+    `
+        INSERT INTO users (${Object.keys(req.body)})
+        VALUES (${Object.keys(req.body).map(x => ':' + x)})
+      `);
+}
+
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
   let result;
   try {
@@ -35,4 +45,5 @@ function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
 
 exports.getUserById = getUserById
 exports.getAllUsers = getAllUsers
+exports.postNewUser = postNewUser
 
