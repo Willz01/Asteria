@@ -54,41 +54,20 @@
 }
 
 .view_booking_container {
-   padding: 1%;
-  display: flex;
-  flex-direction: row;
+  border: 16px solid #050505 ;
+    text-align: left;
+    padding: 8px;
   align-items: center;
   background-color:white;
-  text-decoration-color: black;
+
 } 
-.view_booking_container p{
+#graybooking{
+  background-color: gray;
+}
+.view_booking_container th{
    color: black;}
 
-.ticket_selection {
-  display: flex;
-  flex-direction: column;
-  padding: 2% 5%;
-  grid-template-columns: 3;
-}
-
-.ticket {
-  display: grid;
-  width: 20%;
-  grid-template-columns: 8;
-  align-items: center;
-}
-
-.ticket h1 {
-  font-size: 30px;
-  padding: 5px;
-  margin: 5px;
-  text-align: right;
-  grid-column-start: 1;
-  grid-column-end: 5;
-}
-
-
-
+   
 .seats_container {
   align-self: flex-start;
   padding: auto;
