@@ -1,6 +1,4 @@
 
-
-
 // save logged user session
 function saveSession(user = {}) {
   window.sessionStorage.setItem('user', JSON.stringify(user))

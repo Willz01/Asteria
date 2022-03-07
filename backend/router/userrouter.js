@@ -12,7 +12,7 @@ router.post('/signIn', userServices.getUserById)
 // '/users' --admin
 router.get('/', userServices.getAllUsers)
 
-router.post('/newuser', userServices.postNewUser)
+router.post('/signUp', userServices.postNewUser)
 
 // '/users/:id/bookings' -- booking router
 router.use('/:id/bookings', bookingRouter)

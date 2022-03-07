@@ -17,6 +17,7 @@ function getAllUsers(req, res, next) {
 
 function postNewUser(req, res) {
   delete req.body.id;
+  console.log(req.body);
 
   runQuery(res, req.body,
     `
