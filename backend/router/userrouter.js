@@ -7,12 +7,12 @@ const bookingRouter = require('./bookingrouter')
 
 
 // '/users/:id'
-router.post('/signIn', userServices.getUserById)
+router.post('/signIn', userServices.login)
 
 // '/users' --admin
 router.get('/', userServices.getAllUsers)
 
-router.post('/signUp', userServices.postNewUser)
+router.post('/signUp', userServices.signUp)
 
 // '/users/:id/bookings' -- booking router
 router.use('/:id/bookings', bookingRouter)

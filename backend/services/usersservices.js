@@ -1,13 +1,14 @@
 require('dotenv').config()
 
-const sqlite = require('better-sqlite3')
+const sqlite = require('better-sqlite3');
+const e = require('express');
 const db = sqlite(process.env.SQLITE_URL)
 
-function getUserById(req, res, next) {
+function login(req, res, next) {
   console.log(req.body);
-  res.send(req.body)
-  /* runQuery(res, req.params.userId,
-    `SELECT * FROM users WHERE password = ${req.params.id}`, true); */
+  runQuery(res, req.body,
+    `SELECT * FROM users WHERE password = '?p' AND email = '?e'`, true);
+  //`SELECT * FROM users WHERE password = (${req.body.password}) AND email = (${req.body.email})`, true);
 }
 
 function getAllUsers(req, res, next) {
@@ -15,7 +16,7 @@ function getAllUsers(req, res, next) {
     `SELECT * FROM users`, false);
 }
 
-function postNewUser(req, res) {
+function signUp(req, res) {
   delete req.body.id;
   console.log(req.body);
 
@@ -29,7 +30,19 @@ function postNewUser(req, res) {
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
   let result;
   try {
-    let stmt = db.prepare(sqlForPreparedStatement);
+    let stmt
+    if (sqlForPreparedStatement == `SELECT * FROM users WHERE password = '?p' AND email = '?e'`) {
+      console.log(sqlForPreparedStatement)
+
+      const sqlForPreparedStatementP = sqlForPreparedStatement.replace('?p', parameters.password);
+      var sqlForPreparedStatementE = sqlForPreparedStatementP.replace('?e', parameters.email);
+
+      console.log(sqlForPreparedStatementE)
+
+      stmt = db.prepare(sqlForPreparedStatementE);
+    } else {
+      stmt = db.prepare(sqlForPreparedStatement);
+    }
 
     let method = sqlForPreparedStatement.trim().toLowerCase().indexOf('select') === 0 ?
       'all' : 'run';
@@ -42,9 +55,10 @@ function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
   if (onlyOne) { result = result[0]; }
   result = result || null;
   res.status(result ? (result._error ? 500 : 200) : 404);
+  console.log(result)
   res.json(result);
 }
 
-exports.getUserById = getUserById
+exports.login = login
 exports.getAllUsers = getAllUsers
-exports.postNewUser = postNewUser
+exports.signUp = signUp

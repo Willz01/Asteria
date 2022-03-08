@@ -59,17 +59,21 @@ function handleAccount() {
         email: email,
         password: btoa(password)
       }
+      console.log(auth);
 
       let result = postData(API_URL_SIGN_IN, {
         email: email,
         password: btoa(password)
       })
-      if (result != undefined) {
+      console.log(result.data)
+
+      if (result == undefined) {
         alert('Invalid Login credentials')
+
       } else {
-        // sucess
+        // success
         saveSession(auth)
-        window.location.href = '/'
+        //window.location.href = '/'
       }
 
     } else {  // sign Up
