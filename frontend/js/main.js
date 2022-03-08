@@ -51,7 +51,7 @@ async function router() {
   // if the route is '/partials/products.html';
   route === '/views/start.html' && fillMovieCards();
   route === '/views/bookings.html';
-  route === '/views/findScreening.html';
+  route === '/views/findScreening.html' && fillSelections();
   route === '/views/signUp.html';
   route === '/views/newbooking.html' && loadAndDisplayTheSeats();
   route === '/views/signUp.html' && handleAccount();
