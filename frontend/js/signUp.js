@@ -60,10 +60,7 @@ function handleAccount() {
         password: btoa(password)
       }
 
-      handAuthData(API_URL_SIGN_IN, {
-        email: email,
-        password: btoa(password)
-      })
+      handAuthData(API_URL_SIGN_IN, auth)
 
     } else {  // sign Up
       console.log("POSTING SIGN UP");
@@ -93,13 +90,13 @@ async function handAuthData(url = '', data = {}) {
   });
 
   let r = response
-  if (r.status === 404) {
+  if (r.status === 404) {  // login failure
     alert('Invalid Login credentials')
-  } else if (r.status === 200) {
-    // sucess
+  } else if (r.status === 200) {  // sign up or login success
+    // success
     saveSession(data)
     window.location.replace('/')
-  } if (r.status === 501) {
+  } else if (r.status === 501) { // sign up failure
     alert('Username or email taken')
     window.location.replace('/signUp')
   }
