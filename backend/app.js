@@ -25,24 +25,6 @@ app.use('/start', (req, res) => {
   ))
 })
 
-// app.use('/bookings', (req, res) => {
-//   res.sendFile(path.join(
-//     __dirname, '../',
-//     'frontend',
-//     'views', 'bookings.html'
-//   ))
-// })
-
-// app.use('/signUp', (req, res) => {
-//   res.sendFile(path.join(
-//     __dirname, '../',
-//     'frontend',
-//     'public',
-//     'views', 'signUp.html'
-//   ))
-// })
-
-
 //* enpoints --routes
 
 // ':id', '/'--all

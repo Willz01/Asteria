@@ -54,23 +54,16 @@ function handleAccount() {
 
     // sign IN
     if (userName === 'empty') {
-      console.log('logged in');
+
       var auth = {
         email: email,
         password: btoa(password)
       }
 
-      let result = postData(API_URL_SIGN_IN, {
+      handAuthData(API_URL_SIGN_IN, {
         email: email,
         password: btoa(password)
       })
-      if (result != undefined) {
-        alert('Invalid Login credentials')
-      } else {
-        // sucess
-        saveSession(auth)
-        window.location.href = '/'
-      }
 
     } else {  // sign Up
       console.log("POSTING SIGN UP");
@@ -79,19 +72,14 @@ function handleAccount() {
         userName: userName,
         password: btoa(password)
       }
-      let r = postData(API_URL_SIGN_UP, auth)
-      if (r.data != undefined) {
-        saveSession(auth)
-
-        window.location.href = '/'
-      }
+      handAuthData(API_URL_SIGN_UP, auth)
     }
 
     console.log(email, userName, password);
   })
 }
 
-async function postData(url = '', data = {}) {
+async function handAuthData(url = '', data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
@@ -103,5 +91,21 @@ async function postData(url = '', data = {}) {
     },
     body: JSON.stringify(data)
   });
-  return response.json();
+
+  let r = response
+  if (r.status === 404) {
+    alert('Invalid Login credentials')
+  } else if (r.status === 200) {
+    // sucess
+    saveSession(data)
+    window.location.replace('/')
+  } if (r.status === 501) {
+    alert('Username or email taken')
+    window.location.replace('/signUp')
+  }
+
+
+  console.log(response.status);
+  console.log(response);
+  console.log(typeof response);
 }
