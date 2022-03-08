@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Monoton&family=Montserrat:ital,wght@0,300;0,500;0,600;0,700;1,300&display=swap');
+
+.container {
+  padding: 10px;
+  margin: 30px 0;
+  background-color: rgb(18, 18, 18);
+  border: 1px solid rgb(162, 162, 162);
+  border-radius: 2px;
+}
+
+.filter-screenings {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 0;
+}
+
+.filter-screenings select {
+  height: 30px;
+  width: 130px;
+  border-radius: 3px;
+  font-family: 'Montserrat';
+  cursor: pointer;
+}
+
+.filter-screenings button {
+  background-color: rgb(43, 43, 43);
+  border: 1px solid rgb(162, 162, 162);
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  font-family: 'Montserrat';
+  cursor: pointer;
+}
+
+#screening-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 40px 0;
+  border-top:1px solid rgb(162, 162, 162) ;
+}
+
+.movie-information {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Montserrat';
+}
+
+#movie-plot {
+  height: 100px;
+  font-size: 12px;
+  display: -webkit-box;
+  overflow: scroll;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll; 
+  margin: 20px 0;
+}
+
+#movie-plot::-webkit-scrollbar {
+  display: none;
+}
+
+.screening-times {
+  border-top: 1px solid rgb(162, 162, 162);
+  margin: 30px 0;
+}
+
+.screening {
+  display: flex;
+  text-align: center;
+}
+
+.screening h1 {
+  padding: 20px 0;
+  display: block;
+  cursor: pointer;
+}
+
+.screening p {
+  position: absolute;
+  pointer-events: none;
+  align-self: center;
+  display: none;
+}
+
+.info-screening {
+  display: inline-block;
+  vertical-align: top;
+  color: rgb(255, 225, 0);
+}
+
+.left {
+  padding-right: 20px;
+}
+
+
+.screening h1:hover {
+  opacity: 0.4;
+}
+
+.screening h1:hover + p {
+  display: flex;
+}
+
+#screening-container img {
+  padding: 0 20px 0 40px;
+  width: 50%;
+  object-fit: cover;
+}
+
+@media only screen and (max-width: 480px) {
+
+  .filter-screenings select{
+    width: 50px;
+  }
+
+}
