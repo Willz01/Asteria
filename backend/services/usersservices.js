@@ -3,48 +3,55 @@ require('dotenv').config()
 const sqlite = require('better-sqlite3')
 const db = sqlite(process.env.SQLITE_URL)
 
-function getUserById(req, res, next) {
+function getUser(req, res, next) {
   console.log(req.body);
-  res.send(req.body)
-  /* runQuery(res, req.params.userId,
-    `SELECT * FROM users WHERE password = ${req.params.id}`, true); */
+  getUserFromDb(req, res)
+}
+
+// email and password : signIn
+function getUserFromDb(req, res) {
+  const row = db.prepare('SELECT * FROM users WHERE email = ? and password = ?').get(req.body.email, req.body.password);
+  if (row != undefined) {
+    console.log(row);
+    console.log(row.email);
+    res.status(200).send(row)
+  } else {
+    console.log("UNDEFINED OBJECT; DOESNT EXIST");
+    res.status(404).json({ message: "User doesn't exist" })
+  }
 }
 
 function getAllUsers(req, res, next) {
-  runQuery(res, {},
-    `SELECT * FROM users`, false);
+  const stm = db.prepare('SELECT * FROM users;')
+  let all = stm.all()
+  console.log(all);
+  res.send(all)
 }
+
 
 function postNewUser(req, res) {
   delete req.body.id;
   console.log(req.body);
-
-  runQuery(res, req.body,
-    `
-        INSERT INTO users (${Object.keys(req.body)})
-        VALUES (${Object.keys(req.body).map(x => ':' + x)})
-      `);
+  addNewUser(req, res)
 }
 
-function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
-  let result;
+// email, username and password : sign Up
+function addNewUser(req, res) {
+  // save
   try {
-    let stmt = db.prepare(sqlForPreparedStatement);
-
-    let method = sqlForPreparedStatement.trim().toLowerCase().indexOf('select') === 0 ?
-      'all' : 'run';
-    result = stmt[method](parameters);
+    const row = db.
+      prepare('INSERT INTO users(email, userName, password) VALUES(?, ?, ?)')
+      .run(req.body.email, req.body.userName, req.body.password);
+    console.log(row);
+    // read, check and send
+    getUserFromDb(req, res)
+  } catch (err) {
+    console.error(err);
+    res.status(501).json({ message: "Use a different username or email" })
   }
-  catch (error) {
 
-    result = { _error: error + '' };
-  }
-  if (onlyOne) { result = result[0]; }
-  result = result || null;
-  res.status(result ? (result._error ? 500 : 200) : 404);
-  res.json(result);
 }
 
-exports.getUserById = getUserById
+exports.getUser = getUser
 exports.getAllUsers = getAllUsers
 exports.postNewUser = postNewUser
