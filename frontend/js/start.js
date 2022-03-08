@@ -6,7 +6,7 @@ async function getMovies() {
 
 getMovies()
 */
-
+/*
 const movies = [
   {
     "imDbId": "tt0050083",
@@ -521,6 +521,7 @@ const movies = [
     "errorMessage": ""
   }
 ];
+*/
 
 function fillMovieCards() {
 
@@ -541,3 +542,5 @@ function fillMovieCards() {
 
   document.querySelector('.movie-cards').innerHTML = html;
 }
+
+

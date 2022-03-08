@@ -6,6 +6,11 @@ const express = require('express')
 
 const app = express()
 app.use(express.json())
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 const PORT = 5600
 
 
@@ -19,24 +24,6 @@ app.use('/start', (req, res) => {
     'index.html'
   ))
 })
-
-// app.use('/bookings', (req, res) => {
-//   res.sendFile(path.join(
-//     __dirname, '../',
-//     'frontend',
-//     'views', 'bookings.html'
-//   ))
-// })
-
-// app.use('/signUp', (req, res) => {
-//   res.sendFile(path.join(
-//     __dirname, '../',
-//     'frontend',
-//     'public',
-//     'views', 'signUp.html'
-//   ))
-// })
-
 
 //* enpoints --routes
 

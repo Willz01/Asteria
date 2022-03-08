@@ -1,4 +1,4 @@
-const { request, response } = require('express')
+
 const express = require('express')
 const router = express.Router()
 
@@ -7,11 +7,12 @@ const bookingRouter = require('./bookingrouter')
 
 
 // '/users/:id'
-router.get('/:id', userServices.getUserById)
+router.post('/signIn', userServices.getUser)
 
 // '/users' --admin
-router.get('/', userServices.getAllUsers)
+router.get('/all', userServices.getAllUsers)
 
+router.post('/signUp', userServices.postNewUser)
 
 // '/users/:id/bookings' -- booking router
 router.use('/:id/bookings', bookingRouter)

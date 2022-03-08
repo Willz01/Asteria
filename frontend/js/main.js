@@ -1,3 +1,5 @@
+
+
 document.querySelector('body').addEventListener('click', function (event) {
   let aTag = event.target.closest('a');
 
@@ -49,11 +51,22 @@ async function router() {
   // if the route is '/partials/products.html';
   route === '/views/start.html' && fillMovieCards();
   route === '/views/bookings.html';
-  route === '/views/findScreening.html';
+  route === '/views/findScreening.html' && fillSelections();
   route === '/views/signUp.html';
   route === '/views/newbooking.html' && loadAndDisplayTheSeats();
+  route === '/views/signUp.html' && handleAccount();
 }
 
+if (isSavedSession()) {
+  console.log(getSavedSession());
+  document.getElementById('sign-thing').innerText = 'SIGN OUT'
+  document.getElementById('sign-thing').style.color = 'red'
+} else {
+  console.log('No saved session');
+  document.getElementById('sign-thing').innerText = 'SIGN UP/IN'
+  // document.getElementById('sign-thing').style.color = 'white'
+}
+console.log(isSavedSession());
 
 // runt the router when using the back/forward buttons
 window.addEventListener('popstate', router);
