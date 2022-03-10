@@ -25,13 +25,13 @@ function bookSeats(req, res, next) {
   console.log(req.body)
   runQuery(res, {},
     `INSERT INTO seats(taken, tempReserved, screeningId, bookingId, seatNumber) VALUES(
-      ${req.body.taken}, ${req.body.tempReserved}, ${req.body.screeningId}, ${req.body.bookingId}, ${req.body.seatNumber})`);
+      TRUE, FALSE, ${req.body.screeningId}, ${req.body.bookingId}, ${req.body.seatNumber})`);
 }
 
 function tempBookSeats(req, res, next) {
   runQuery(res, {},
     `INSERT INTO seats(taken, tempReserved, screeningId, bookingId, seatNumber) VALUES(
-      false, true, ${req.body.screeningId}, ${req.body.bookingId}, ${req.body.seatNumber})`);
+      FALSE, TRUE, ${req.body.screeningId}, ${req.body.bookingId}, ${req.body.seatNumber})`);
 }
 
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
