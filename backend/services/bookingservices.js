@@ -9,24 +9,53 @@ function getBookings(req, res, next) {
 }
 
 function getBookingById(req, res, next) {
-  res.send({ bookingID: req.params.id })
+  runQuery(res, {},
+    `SELECT * FROM bookings WHERE id = ${req.body.id}`, false);
 }
 
-function deleteBooking(req, res, next) {
-  res.send({ deleted: req.params.id })
-}
-
+// userId, adults, children, seniors
 function newBooking(req, res, next) {
-  res.send(req.query)
+  console.log(req.body)
+  runQuery(res, {},
+    `INSERT INTO bookings(userId, adults, children, seniors) VALUES(
+      ${req.body.userId}, ${req.body.adults}, ${req.body.children}, ${req.body.seniors})`);
 }
 
-function editBooking(req, res, next) {
-  res.send(req.query)
+function bookSeats(req, res, next) {
+  console.log(req.body)
+  runQuery(res, {},
+    `INSERT INTO seats(taken, tempReserved, screeningId, bookingId, seatNumber) VALUES(
+      ${req.body.taken}, ${req.body.tempReserved}, ${req.body.screeningId}, ${req.body.bookingId}, ${req.body.seatNumber})`);
 }
 
-exports.deleteBooking = deleteBooking
+function tempBookSeats(req, res, next) {
+  runQuery(res, {},
+    `INSERT INTO seats(taken, tempReserved, screeningId, bookingId, seatNumber) VALUES(
+      false, true, ${req.body.screeningId}, ${req.body.bookingId}, ${req.body.seatNumber})`);
+}
+
+function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
+  let result;
+  try {
+    let stmt = db.prepare(sqlForPreparedStatement);
+
+    let method = sqlForPreparedStatement.trim().toLowerCase().indexOf('select') === 0 ?
+      'all' : 'run';
+    result = stmt[method](parameters);
+  }
+  catch (error) {
+
+    result = { _error: error + '' };
+  }
+  if (onlyOne) { result = result[0]; }
+  result = result || null;
+  res.status(result ? (result._error ? 500 : 200) : 404);
+  res.json(result);
+}
+
 exports.getBookingById = getBookingById
 exports.getBookings = getBookings
 exports.newBooking = newBooking
-exports.editBooking = editBooking
+exports.tempBookSeats = tempBookSeats
+exports.bookSeats = bookSeats
 
