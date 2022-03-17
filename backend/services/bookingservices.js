@@ -10,7 +10,7 @@ function getBookings(req, res, next) {
 
 function getBookingById(req, res, next) {
   runQuery(res, {},
-    `SELECT * FROM bookings WHERE id = ${req.body.id}`, false);
+    `SELECT * FROM bookings WHERE id = ${req.params.id}`, true);
 }
 
 // userId, adults, children, seniors
@@ -21,17 +21,38 @@ function newBooking(req, res, next) {
       ${req.body.userId}, ${req.body.adults}, ${req.body.children}, ${req.body.seniors})`);
 }
 
-function bookSeats(req, res, next) {
-  console.log(req.body)
-  runQuery(res, {},
-    `INSERT INTO seats(taken, tempReserved, screeningId, bookingId, seatNumber) VALUES(
-      TRUE, FALSE, ${req.body.screeningId}, ${req.body.bookingId}, ${req.body.seatNumber})`);
+function updateBooking(req, res, next) {
+  runQuery(`
+    UPDATE bookings 
+    SET
+    userId = ${req.body.userId}, 
+    adults = ${req.body.adults},
+    children = ${req.body.children},
+    seniors
+    WHERE bookingId = ${req.body.bookingId}
+  `);
 }
 
-function tempBookSeats(req, res, next) {
+//booking and reserved seats join on 
+function getBookingAndSeats(req, res, next) {
+  console.log(req.body)
   runQuery(res, {},
-    `INSERT INTO seats(taken, tempReserved, screeningId, bookingId, seatNumber) VALUES(
-      FALSE, TRUE, ${req.body.screeningId}, ${req.body.bookingId}, ${req.body.seatNumber})`);
+    `SELECT 
+    bookings.bookingId,
+    bookings.userId,
+    bookings.adults,
+    bookings.children,
+    bookings.seniors,
+    reservedseats.reservedSeatId,
+    reservedseats.screeningId,
+    reservedseats.seatId,
+    reservedseats.dateTime,
+    reservedseats.isTemp
+    FROM bookings
+    JOIN reservedseats
+    ON bookings.bookingId = reservedseats.bookingId
+    WHERE bookings.bookingId = ${req.params.id}
+    `);
 }
 
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
@@ -56,6 +77,6 @@ function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
 exports.getBookingById = getBookingById
 exports.getBookings = getBookings
 exports.newBooking = newBooking
-exports.tempBookSeats = tempBookSeats
-exports.bookSeats = bookSeats
+exports.updateBooking = updateBooking
+exports.getBookingAndSeats = getBookingAndSeats
 

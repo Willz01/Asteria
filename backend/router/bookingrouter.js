@@ -13,16 +13,10 @@ router.get('/:id', bookingServices.getBookingById)
 // post new booking
 router.post('/new-booking', bookingServices.newBooking)
 
-// book seats for a new booking
-router.post('/book-seats', bookingServices.bookSeats)
-
-// temporarily book seats, not sure if it will be used
-// call this method when clicking on the seats but prior to booking I guess
-router.post('/temp-book-seats', bookingServices.tempBookSeats)
-
+router.get('/full-booking/:id', bookingServices.getBookingAndSeats)
 
 // edit user's booking
-//router.put('/:id', bookingServices.editBooking)
+router.put('/:id', bookingServices.updateBooking)
 
 // delete user's booking
 //router.delete('/:id', bookingServices.deleteBooking)
