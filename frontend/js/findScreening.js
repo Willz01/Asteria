@@ -107,9 +107,12 @@ function filterScreenings() {
 
 }
 
-async function bookScreening(screeningId) {
+async function bookScreening(element) {
+  let id = element.id;
+  console.log(id)
 
-  let screening = await (await fetch('http://localhost:5600/api/screenings/' + screeningId)).json()
+  let screening = await (await fetch('http://localhost:5600/api/screenings/' + id)).json();
+  console.log(screening);
 
   window.sessionStorage.setItem("screening", JSON.stringify(screening));
   let booking = { "bookingId": "", "userId": "", "adults": 0, "children": 0, "seniors": 0 }
@@ -136,7 +139,7 @@ async function generateScreenings() {
         </p>
         <div class="screening-times">
       <div class="screening">
-      <h1 id="${screening.screeningId}" onclick="bookScreening(${screening.screeningId})">${screening.time.slice(0, -3)}</h1>
+      <h1 id=${screening.screeningId} onclick="bookScreening(this)">${screening.time.slice(0, -3)}</h1>
         <p>Book this</p>
       </div>
    </div>
