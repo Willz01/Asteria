@@ -5,6 +5,10 @@ const db = sqlite(process.env.SQLITE_URL)
 
 
 function getScreenings(req, res, next) {
+  runQuery(res, {}, `SELECT * FROM screenings`);
+}
+
+function getAllOfScreenings(req, res, next) {
   runQuery(res, {}, `SELECT 
         screenings.screeningId,
         screenings.date,
@@ -75,7 +79,7 @@ function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
 }
 
 
-
+exports.getAllOfScreenings = getAllOfScreenings
 exports.getScreeningById = getScreeningById
 exports.getScreenings = getScreenings
 exports.newScreening = newScreening

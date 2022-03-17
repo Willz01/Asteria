@@ -10,9 +10,13 @@ router.get('/', reservedSeatServices.getAllReservations)
 router.get('/booking/:id', reservedSeatServices.getByBookingId)
 
 // get all seat reservation by the screeningId
-router.get('/:id', reservedSeatServices.getByScreeningId)
+router.get('/screening/:id', reservedSeatServices.getByScreeningId)
 
 // create new seat reservation
 router.post('/new-reservation', reservedSeatServices.newReservation)
+
+router.put('/', reservedSeatServices.updateReservation)
+
+router.delete('/:id', reservedSeatServices.deleteReservation)
 
 module.exports = router

@@ -141,9 +141,10 @@ function filterScreenings() {
 
 async function bookScreening(element) {
   let id = element.id;
+  console.log(id)
 
-  screening = await (await fetch('http://localhost:5600/api/screenings/' + id)).json()
-  console.log(screening)
+  let screening = await (await fetch('http://localhost:5600/api/screenings/' + id)).json();
+  console.log(screening);
 
   window.sessionStorage.setItem("screening", JSON.stringify(screening));
   let booking = { "bookingId": "", "userId": "", "adults": 0, "children": 0, "seniors": 0 }
@@ -159,8 +160,6 @@ async function generateScreenings() {
   let html = '';
 
   for (let screening of filteredScreenings) {
-    console.log(screening.screeningId);
-
 
     html += `
     <div id="screening-container">
@@ -173,7 +172,7 @@ async function generateScreenings() {
         </p>
         <div class="screening-times">
       <div class="screening">
-      <h1 id="${screening.screeningId} "onclick="bookScreening(this)">${screening.time}</h1>
+      <h1 id=${screening.screeningId} onclick="bookScreening(this)">${screening.time}</h1>
         <p>Book this</p>
       </div>
    </div>

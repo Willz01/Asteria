@@ -13,45 +13,40 @@
   max-height: 50%;
 }
 
-.new_booking__header {
-  display: grid;
+.new_booking_header {
+  display: flex;
+  flex-direction: row;
 }
 
-.new_booking__header h1 {
+.new_booking_header h1 {
   font-size: 40px;
-  align-items: center;
-  text-align: center;
-  grid-column-start: 1;
-  grid-column-end: 2;
+  text-align: left;
+  flex: 1;
+  border-bottom: 1px solid white;
 }
 
-.new_booking__header h2 {
+.new_booking_header h2 {
   font-size: 30px;
   padding: 10px;
   margin: 5px 2%;
   margin-bottom: 10px;
-  text-align: left;
-  border-bottom: 1px solid white;
-  grid-column-start: 1;
-  grid-column-end: 7;
+  text-align: right;
 }
 
-.new_booking__header h3 {
+.new_booking__header h1 {
   align-self: baseline;
   font-size: 25px;
   padding-top: 40px;
   padding-right: 30px;
   margin-top: 20px;
   margin: 5px 2%;
-  text-align: right;
-  grid-column-start: 7;
-  grid-column-end: 12;
+  
 }
 
-.new_booking__header p {
+.new_booking__header h2 {
   align-self: center;
   text-align: left;
-  grid-column: 2;
+  padding: 10;
 }
 
 .ticket_seat_selection {
@@ -84,8 +79,6 @@
   padding: 5px;
   margin: 5px;
   text-align: right;
-  grid-column-start: 1;
-  grid-column-end: 5;
 }
 
 .ticket_button_less {
@@ -93,8 +86,6 @@
   margin: 2px;
   width: 20px;
   height: 20px;
-  grid-column-start: 6;
-  grid-column-end: 7;
 }
 
 .ticket_button_more {
@@ -127,23 +118,18 @@
 }
 
 @media only screen and (max-width: 1200px) {
-  .new_booking__header h1 {
+  .new_booking__header1 h1 {
   font-size: 35px;
   align-items: center;
   text-align: center;
-  grid-column-start: 1;
-  grid-column-end: 2;
 }
 
-.new_booking__header h2 {
+.new_booking__header1 h2 {
   font-size: 25px;
   padding: 10px;
   margin: 5px 2%;
   margin-bottom: 10px;
-  text-align: left;
-  border-bottom: 1px solid white;
-  grid-column-start: 1;
-  grid-column-end: 7;
+  text-align: right;
 }
 
 .new_booking__header h3 {
@@ -186,8 +172,6 @@ main {
   margin-bottom: 10px;
   text-align: left;
   border-bottom: 1px solid white;
-  grid-column-start: 1;
-  grid-column-end: 7;
 }
 
 .new_booking__header h3 {
@@ -198,15 +182,12 @@ main {
   margin-top: 20px;
   margin: 5px 2%;
   text-align: right;
-  grid-column-start: 7;
-  grid-column-end: 12;
 }
 
 .new_booking__header p {
   font-size: 8px;
   align-self: center;
   text-align: left;
-  grid-column: 2;
 }
   
 }
@@ -215,23 +196,28 @@ main {
   main {
   padding: 0 5%;
 }
-    .new_booking__header h1 {
+
+.ticket h1 {
+  font-size: 20px;
+  padding: 5px;
+  margin: 5px;
+  text-align: right;
+}
+
+.ticket_seat_selection {
+  flex-direction: column;
+
+}
+    .new_booking_header h1 {
   font-size: 30px;
   align-items: center;
   text-align: center;
-  grid-column-start: 1;
-  grid-column-end: 2;
 }
 
-.new_booking__header h2 {
+.new_booking_header h2 {
   font-size: 20px;
   padding: 10px;
   margin: 5px 2%;
-  margin-bottom: 10px;
-  text-align: left;
-  border-bottom: 1px solid white;
-  grid-column-start: 1;
-  grid-column-end: 7;
 }
 
 .new_booking__header h3 {
@@ -242,14 +228,11 @@ main {
   margin-top: 20px;
   margin: 5px 2%;
   text-align: right;
-  grid-column-start: 7;
-  grid-column-end: 12;
 }
 
 .new_booking__header p {
   font-size: 8px;
   align-self: center;
   text-align: left;
-  grid-column: 2;
 }
 }

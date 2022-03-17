@@ -134,6 +134,12 @@ footer address {
     font-size: 40px;
   }
 
+  .navigation {
+    margin: 0, 5px;
+    width: 100%;
+    justify-content: stretch;
+  }
+
   .navigation h2 {
     font-size: 15px;
     width: 100%;
