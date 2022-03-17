@@ -1,6 +1,13 @@
-function movieView() {
-  //movies/superman
+async function lookAtMovie(movieTitle) {
+  console.log(movieTitle);
+  window.sessionStorage.setItem("filterMovie", JSON.stringify(movieTitle));
+
+  history.pushState(null, null, "/findScreening");
+  router();
+
+
 }
+
 
 async function fillMovieCards() {
 
@@ -9,9 +16,10 @@ async function fillMovieCards() {
 
   console.log(movies);
   for (let movie of movies) {
+    console.log(movie);
     html += `
-    <div class="movie-card">
-      <div class="movie-information">
+    <div class="movie-card" onclick="lookAtMovie('${movie.title}')">
+      <div class="movie-information" >
         <h2>${movie.title}</h2>
         <p>${movie.plot}</p>
       </div>
@@ -24,5 +32,4 @@ async function fillMovieCards() {
 
   document.querySelector('.movie-cards').innerHTML = html;
 }
-
 
