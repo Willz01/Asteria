@@ -1,24 +1,4 @@
 
-/*
-async function getScreenings() {
-  let screenings = await (await fetch('http://localhost:5600/api/screenings')).json();
-  return screenings;
-}
-*/
-
-/*
-async function getMovies() {
-  let movies = await (await fetch('http://localhost:5600/api/movies')).json();
-  return movies;
-}
-*/
-
-/*
-async function getTheatres() {
-  let theatres = await (await fetch('http://localhost:5600/api/theatres')).json();
-  return theatres;
-}
-*/
 let searchButton = null;
 let theatreSelect = null;
 let screeningHolder = null;
@@ -159,13 +139,29 @@ function filterScreenings() {
 
 }
 
+async function bookScreening(element) {
+  let id = element.id;
 
-function generateScreenings() {
+  screening = await (await fetch('http://localhost:5600/api/screenings/' + id)).json()
+  console.log(screening)
+
+  window.sessionStorage.setItem("screening", JSON.stringify(screening));
+  let booking = { "bookingId": "", "userId": "", "adults": 0, "children": 0, "seniors": 0 }
+  window.sessionStorage.setItem("booking", JSON.stringify(booking));
+
+  history.pushState(null, null, "http://localhost:5601/newBooking");
+  await router();
+}
+
+async function generateScreenings() {
 
   console.log(filteredScreenings);
   let html = '';
 
   for (let screening of filteredScreenings) {
+    console.log(screening.screeningId);
+
+
     html += `
     <div id="screening-container">
       <div class="movie-information">
@@ -177,7 +173,7 @@ function generateScreenings() {
         </p>
         <div class="screening-times">
       <div class="screening">
-      <h1 onclick="bookScreening(${screening.id})">${screening.time}</h1>
+      <h1 id="${screening.screeningId} "onclick="bookScreening(this)">${screening.time}</h1>
         <p>Book this</p>
       </div>
    </div>
@@ -192,3 +188,5 @@ function generateScreenings() {
   screeningHolder.innerHTML = html;
 
 }
+
+
