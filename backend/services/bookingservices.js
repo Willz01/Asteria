@@ -5,7 +5,8 @@ const db = sqlite(process.env.SQLITE_URL)
 
 
 function getBookings(req, res, next) {
-  runQuery(`SELECT * FROM bookings`, false);
+  runQuery(res, {},
+    `SELECT * FROM bookings WHERE userId = ${req.body.userId}`, false);
 }
 
 function getBookingById(req, res, next) {
