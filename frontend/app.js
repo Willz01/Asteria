@@ -17,6 +17,10 @@ app.all("/*", (req, res) => {
   ))
 });
 
+
+// served pages '/start', '/bookings', '/signUp'
+
+
 app.listen(PORT, () => {
   console.log(`Asteria server running @ PORT: ${PORT}`);
   console.log('Start page served at http://127.0.0.1:5601/');

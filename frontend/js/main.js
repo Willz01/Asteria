@@ -53,7 +53,7 @@ async function router() {
   route === '/views/bookings.html';
   route === '/views/findScreening.html' && fillSelections();
   route === '/views/signUp.html';
-  route === '/views/newBooking.html' && await newBooking();
+  route === '/views/newbooking.html' && loadAndDisplayTheSeats();
   route === '/views/signUp.html' && handleAccount();
 }
 
