@@ -122,11 +122,23 @@ async function bookScreening(element) {
   router();
 }
 
+function playVideo(screeningId) {
+  const iframes = document.querySelectorAll(".iframe");
+
+  for (let iframe of iframes) {
+    if (iframe.id == screeningId) {
+      iframe.classList.toggle("playingVideo");
+    }
+  }
+}
+
 async function generateScreenings() {
 
   let html = '';
 
   for (let screening of filteredScreenings) {
+
+    let link = screening.link.split("/").pop();
 
     html += `
     <div id="screening-container">
@@ -138,21 +150,25 @@ async function generateScreenings() {
         <span class="info-screening">${screening.name}</span>
         </p>
         <div class="screening-times">
-      <div class="screening">
-      <h1 id=${screening.screeningId} onclick="bookScreening(this)">${screening.time.slice(0, -3)}</h1>
-        <p>Book this</p>
+          <div class="screening">
+            <h1 id="${screening.screeningId}" onclick="bookScreening(${screening.screeningId})">${screening.time.slice(0, -3)}</h1>
+            <p>Book this</p>
+          </div>
+        </div>
       </div>
-   </div>
-    </div>
-      <img
+      <div class="movieMedia">
+        <img
+        onclick="playVideo(${screening.screeningId})"
         src="${screening.thumbnailUrl}"
-        alt="">
+        alt=""></img>
+
+        <iframe class="iframe" id="${screening.screeningId}" src="http://www.imdb.com/video/imdb/${link}/imdb/embed"
+        autoplay="true" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" mozallowfullscreen="true"
+        webkitallowfullscreen="true" scrolling="no"></iframe>
+      </div>
     </div>
     `;
   }
 
   screeningHolder.innerHTML = html;
-
 }
-
-
