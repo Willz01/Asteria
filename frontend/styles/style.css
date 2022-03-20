@@ -29,6 +29,13 @@ main {
   flex: 1;
 }
 
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
 .heading {
   padding: 0 20%;
   padding-top: 50px;
@@ -96,6 +103,22 @@ nav .active {
 
 .account-section {
   background-color: rgb(45, 45, 45);
+}
+
+h4 {
+  text-align: center;
+  margin-top: 30px;
+  color: white;
+  font-size: 50px;
+  font-family: 'Montserrat';
+}
+
+p {
+  text-align: center;
+  font-family: 'Montserrat';
+  color: white;
+  font-size: 30px;
+
 }
 
 .account-section label, div {
