@@ -5,28 +5,79 @@ const db = sqlite(process.env.SQLITE_URL)
 
 
 function getBookings(req, res, next) {
-  res.send({ test: 'current bookings' })
+  runQuery(res, {},
+    `SELECT * FROM bookings WHERE userId = ${req.body.userId}`, false);
 }
 
 function getBookingById(req, res, next) {
-  res.send({ bookingID: req.params.id })
+  runQuery(res, {},
+    `SELECT * FROM bookings WHERE id = ${req.params.id}`, true);
 }
 
-function deleteBooking(req, res, next) {
-  res.send({ deleted: req.params.id })
-}
-
+// userId, adults, children, seniors
 function newBooking(req, res, next) {
-  res.send(req.query)
+  console.log(req.body)
+  runQuery(res, {},
+    `INSERT INTO bookings(userId, adults, children, seniors) VALUES(
+      ${req.body.userId}, ${req.body.adults}, ${req.body.children}, ${req.body.seniors})`);
 }
 
-function editBooking(req, res, next) {
-  res.send(req.query)
+function updateBooking(req, res, next) {
+  runQuery(`
+    UPDATE bookings 
+    SET
+    userId = ${req.body.userId}, 
+    adults = ${req.body.adults},
+    children = ${req.body.children},
+    seniors
+    WHERE bookingId = ${req.body.bookingId}
+  `);
 }
 
-exports.deleteBooking = deleteBooking
+//booking and reserved seats join on 
+function getBookingAndSeats(req, res, next) {
+  console.log(req.body)
+  runQuery(res, {},
+    `SELECT 
+    bookings.bookingId,
+    bookings.userId,
+    bookings.adults,
+    bookings.children,
+    bookings.seniors,
+    reservedseats.reservedSeatId,
+    reservedseats.screeningId,
+    reservedseats.seatId,
+    reservedseats.dateTime,
+    reservedseats.isTemp
+    FROM bookings
+    JOIN reservedseats
+    ON bookings.bookingId = reservedseats.bookingId
+    WHERE bookings.bookingId = ${req.params.id}
+    `);
+}
+
+function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
+  let result;
+  try {
+    let stmt = db.prepare(sqlForPreparedStatement);
+
+    let method = sqlForPreparedStatement.trim().toLowerCase().indexOf('select') === 0 ?
+      'all' : 'run';
+    result = stmt[method](parameters);
+  }
+  catch (error) {
+
+    result = { _error: error + '' };
+  }
+  if (onlyOne) { result = result[0]; }
+  result = result || null;
+  res.status(result ? (result._error ? 500 : 200) : 404);
+  res.json(result);
+}
+
 exports.getBookingById = getBookingById
 exports.getBookings = getBookings
 exports.newBooking = newBooking
-exports.editBooking = editBooking
+exports.updateBooking = updateBooking
+exports.getBookingAndSeats = getBookingAndSeats
 

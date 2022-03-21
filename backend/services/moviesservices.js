@@ -5,15 +5,13 @@ const db = sqlite(process.env.SQLITE_URL)
 
 
 function getMovieById(req, res, next) {
-  runQuery(res, req.params.userId,
+  runQuery(res, {},
     `SELECT * FROM movies WHERE id = ${req.params.id}`, true);
-  res.send({ movieID: req.params.id })
 }
 
 function getAllMovies(req, res, next) {
   runQuery(res, {},
     `SELECT * FROM movies`, false);
-  res.send({ testALL: 'movies' })
 }
 
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
