@@ -54,18 +54,21 @@
 }
 
 .view_booking_container {
-  border: 16px solid #050505 ;
     text-align: left;
     padding: 8px;
   align-items: center;
   background-color:white;
+  color: grey;
 
 } 
+table, th, td {
+  border: 3px inset gray;
+}
 #graybooking{
   background-color: gray;
 }
 .view_booking_container th{
-   color: black;}
+ }
 
    
 .seats_container {

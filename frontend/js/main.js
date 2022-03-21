@@ -50,7 +50,7 @@ async function router() {
   // run the productLister function (in another file)
   // if the route is '/partials/products.html';
   route === '/views/start.html' && fillMovieCards();
-  route === '/views/bookings.html';
+  route === '/views/bookings.html' && loadBookingsToTable();
   route === '/views/findScreening.html' && fillSelections();
   route === '/views/signUp.html';
   route === '/views/newbooking.html' && loadAndDisplayTheSeats();
