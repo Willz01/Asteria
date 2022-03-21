@@ -59,6 +59,7 @@ main {
   text-align: center;
 }
 
+
 .navigation a, .dropdown {
   text-decoration: none;
   text-align: center;
@@ -97,6 +98,8 @@ nav .active {
 .dropdown-content a:hover {
   color: rgb(255, 225, 0);
 }
+
+
 
 .dropdown:hover .dropdown-content {
   display: block;

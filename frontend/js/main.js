@@ -58,6 +58,7 @@ async function router() {
 }
 
 if (isSavedSession()) {
+
   console.log(getSavedSession());
   document.getElementById('sign-thing').innerText = 'SIGN OUT'
   document.getElementById('sign-thing').style.color = 'red'
@@ -73,3 +74,11 @@ window.addEventListener('popstate', router);
 
 // run the router on page load
 router();
+
+document.querySelector('.booking-btn').addEventListener('click', () => {
+  if (isSavedSession()) {
+
+  } else {
+    window.location.href = '/signUp'
+  }
+})
