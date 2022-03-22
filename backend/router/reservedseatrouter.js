@@ -15,8 +15,8 @@ router.get('/screening/:id', reservedSeatServices.getByScreeningId)
 // create new seat reservation
 router.post('/new-reservation', reservedSeatServices.newReservation)
 
-router.put('/', reservedSeatServices.updateReservation)
+router.put('/update', reservedSeatServices.updateReservation)
 
-router.delete('/:id', reservedSeatServices.deleteReservation)
+router.delete('/delete/:id', reservedSeatServices.deleteReservation)
 
 module.exports = router

@@ -37,7 +37,7 @@ async function fillSelections() {
   fillDay();
   fillMovie();
 
-  const chosenMovie = JSON.parse(window.sessionStorage.getItem("filterMovie"));
+  const chosenMovie = getStorage("filterMovie");
 
   if (chosenMovie) {
     movieSelect.value = chosenMovie
@@ -107,16 +107,14 @@ function filterScreenings() {
 
 }
 
-async function bookScreening(element) {
-  let id = element.id;
-  console.log(id)
-
-  let screening = await (await fetch('http://localhost:5600/api/screenings/' + id)).json();
+async function bookScreening(screeningId) {
+  let screening = await (await fetch('http://localhost:5600/api/screenings/' + screeningId)).json();
   console.log(screening);
-
-  window.sessionStorage.setItem("screening", JSON.stringify(screening));
-  let booking = { "bookingId": "", "userId": "", "adults": 0, "children": 0, "seniors": 0 }
-  window.sessionStorage.setItem("booking", JSON.stringify(booking));
+  setStorage("screening", screening);
+  if (getStorage("booking") === (undefined || null)) {
+    let booking = { "bookingId": "", "userId": "", "adults": 0, "children": 0, "seniors": 0 }
+    setStorage("booking", booking);
+  }
 
   history.pushState(null, null, "/newBooking");
   router();
@@ -137,8 +135,10 @@ async function generateScreenings() {
   let html = '';
 
   for (let screening of filteredScreenings) {
-
     let link = screening.link.split("/").pop();
+    let timeArray = screening.time.split(":");
+    let hr = timeArray[0];
+    let min = timeArray[1];
 
     html += `
     <div id="screening-container">
@@ -151,13 +151,13 @@ async function generateScreenings() {
         </p>
         <div class="screening-times">
           <div class="screening">
-            <h1 id="${screening.screeningId}" onclick="bookScreening(${screening.screeningId})">${screening.time.slice(0, -3)}</h1>
+            <h1 onclick="bookScreening(${screening.screeningId})">${hr}:${min}</h1>
             <p>Book this</p>
           </div>
         </div>
       </div>
       <div class="movieMedia">
-        <img
+         <img
         onclick="playVideo(${screening.screeningId})"
         src="${screening.thumbnailUrl}"
         alt=""></img>

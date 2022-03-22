@@ -56,13 +56,13 @@
   align-items: center;
   max-height: 40%;
   width: auto;
-  padding: 5%;
+  padding: 2%;
 }
 
 .ticket_selection {
   display: flex;
   flex-direction: column;
-  padding: 2% 5%;
+  padding: 2%;
   grid-template-columns: 3;
   max-height: inherit;
 }
@@ -93,8 +93,6 @@
   margin: 2px;
   width: 20px;
   height: 20px;
-  grid-column-start: 7;
-  grid-column-end: 8;
 }
 
 .seats_container {
@@ -102,19 +100,20 @@
 	position: relative;
   border-radius: 10px;
 	width: 100%;
-	padding-bottom: 80%; 
+	padding-bottom: 100%; 
 	vertical-align: middle; 
-  max-height: inherit;
-	overflow: hidden; 
-  background-color: gray;
-
+  height: auto;
+	overflow: hidden;
+  background-color: transparent;
 }
 
 .svg-content { 
 	display: inline-block;
-	position: absolute;
-	top: 0;
-	left: 0;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  max-height: inherit;
+
 }
 
 @media only screen and (max-width: 1200px) {

@@ -10,16 +10,18 @@ function getBookings(req, res, next) {
 }
 
 function getBookingById(req, res, next) {
+  console.log(req.params)
   runQuery(res, {},
-    `SELECT * FROM bookings WHERE id = ${req.params.id}`, true);
+    `SELECT * FROM bookings WHERE bookingId = ${req.params.id}`, true);
 }
 
 // userId, adults, children, seniors
 function newBooking(req, res, next) {
   console.log(req.body)
-  runQuery(res, {},
-    `INSERT INTO bookings(userId, adults, children, seniors) VALUES(
-      ${req.body.userId}, ${req.body.adults}, ${req.body.children}, ${req.body.seniors})`);
+  const row = db.
+    prepare('INSERT INTO bookings(bookingId, userId, adults, children, seniors) VALUES(?, ?, ?, ?, ?)')
+    .run(req.body.bookingId, req.body.userId, req.body.adults, req.body.children, req.body.seniors);
+  console.log(row);
 }
 
 function updateBooking(req, res, next) {
@@ -29,9 +31,14 @@ function updateBooking(req, res, next) {
     userId = ${req.body.userId}, 
     adults = ${req.body.adults},
     children = ${req.body.children},
-    seniors
+    seniors = ${req.body.seniors}
     WHERE bookingId = ${req.body.bookingId}
   `);
+}
+
+function deleteBooking(req, res, next) {
+  runQuery(res, {},
+    `DELETE FROM bookings WHERE bookingId = ${req.params.id}`, true);
 }
 
 //booking and reserved seats join on 
@@ -80,4 +87,4 @@ exports.getBookings = getBookings
 exports.newBooking = newBooking
 exports.updateBooking = updateBooking
 exports.getBookingAndSeats = getBookingAndSeats
-
+exports.deleteBooking = deleteBooking
