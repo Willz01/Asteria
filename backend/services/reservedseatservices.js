@@ -39,9 +39,9 @@ function updateReservation(req, res, next) {
   `);
 }
 
-function deleteReservation(req, res, next) {
+function deleteSeatReservation(req, res, next) {
   const row = db.prepare(
-    `DELETE FROM reservedseats WHERE reservationSeatId = ?`).run(req.params.id);
+    `DELETE FROM reservedseats WHERE seatId = ? AND bookingId = ?`).run(req.body.seatId, req.body.bookingId);
   console.log(row)
 }
 
@@ -69,4 +69,4 @@ exports.getByScreeningId = getByScreeningId
 exports.getByBookingId = getByBookingId
 exports.newReservation = newReservation
 exports.updateReservation = updateReservation
-exports.deleteReservation = deleteReservation
+exports.deleteSeatReservation = deleteSeatReservation

@@ -17,6 +17,6 @@ router.post('/new-reservation', reservedSeatServices.newReservation)
 
 router.put('/update', reservedSeatServices.updateReservation)
 
-router.delete('/delete/:id', reservedSeatServices.deleteReservation)
+router.delete('/delete', reservedSeatServices.deleteSeatReservation)
 
 module.exports = router

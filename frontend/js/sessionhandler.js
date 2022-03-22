@@ -14,6 +14,7 @@ function getSavedSession() {
 function clearSession() {
   window.sessionStorage.removeItem('userHash')
   window.localStorage.removeItem('userHash')
+  window.clearSession();
 }
 
 function isSavedSession() {

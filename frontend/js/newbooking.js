@@ -46,16 +46,26 @@ async function reserveSeat(seatId) {
       });
     }
   } else {
-    alert("PLease add tickets")
+    alert("Please add tickets to add seats")
   }
-  document.window.location.reload(true)
+  document.window.location.reload(false)
   newBooking()
 }
 
 async function unreserveSeat(seatId) {
 
-  await fetch("http://localhost:5600/api/reservedseat/" + seatId, {
-    method: 'DELETE'
+  const booking = getStorage("booking");
+  const reqBody = {
+    "bookingId": booking.bookingId,
+    "seatId": seatId,
+  }
+
+  await fetch("http://localhost:5600/api/reservedseat/delete", {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(reqBody)
   });
   window.location.reload()
   newBooking();
@@ -180,8 +190,17 @@ async function newBooking() {
         if (reservation.isTemp === 1) {
           let now = Date.now();
           if (reservation.dateTime + (1000 * 60) * 5 < now) {
-            await fetch('http://localhost:5600/api/reservedseat/delete/' + reservation.reservedSeatId, {
-              method: 'DELETE'
+            const reqBody = {
+              "seatId": reservation.seatId,
+              "screeningId": screening.screeningId
+            }
+
+            const response = await fetch("http://localhost:5600/api/screenings/removeSeatReservation", {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(reqBody)
             });
 
             await fetch('http://localhost:5600/api/bookings/' + reservation.bookingId, {
@@ -195,17 +214,13 @@ async function newBooking() {
           if (reservation.bookingId != booking.bookingId) {
             html += `<rect fill="grey" x="${x_pos}" height="${sizing}" y="${y_pos}"
             width="${sizing}" rx="4" />`
-            x_pos += sizing * 2;
-            count++;
             found = true
             break;
           } else {
             console.log("inside user seatarray")
             html += `<rect fill="blue" x="${x_pos}" height="${sizing}" y="${y_pos}"
             width="${sizing}" rx="4" onclick="unreserveSeat(${count})"/>`
-            x_pos += sizing * 2;
             found = true
-            count++;
             break;
           }
         }
@@ -213,9 +228,10 @@ async function newBooking() {
       if (!found) {
         html += `<rect fill="rgb(255, 225, 0)" x="${x_pos}" height="${sizing}" y="${y_pos}"
           width="${sizing}" rx="4" onclick="reserveSeat(${count})"/>`;
-        x_pos += sizing * 2
-        count++;
       }
+      found = false;
+      x_pos += sizing * 2
+      count++;
     }
     y_pos += sizing * 2;
   }
