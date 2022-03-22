@@ -1,4 +1,3 @@
-
 // save logged user session
 function saveSession(user = {}) {
   window.sessionStorage.setItem('userHash', btoa(JSON.stringify(user)))
@@ -12,7 +11,8 @@ function getSavedSession() {
 
 // clear session: for logOut
 function clearSession() {
-  window.sessionStorage.clearSession();
+  window.sessionStorage.removeItem('userHash')
+  window.localStorage.removeItem('userHash')
 }
 
 function isSavedSession() {
@@ -21,4 +21,3 @@ function isSavedSession() {
   else
     return true
 }
-
