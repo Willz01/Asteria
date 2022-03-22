@@ -23,6 +23,7 @@ document.querySelector('body').addEventListener('click', function (event) {
 
 
 function makeMenuChoiceActive(route) {
+  document.querySelector('.dropdown').classList.remove('active');
   // change active link in the menu
   let aTagsInNav = document.querySelectorAll('nav a');
   for (let aTag of aTagsInNav) {
@@ -31,6 +32,10 @@ function makeMenuChoiceActive(route) {
     if (href === route) {
       aTag.classList.add('active');
     }
+  }
+
+  if (route === '/findScreening' || route === '/bookings') {
+    document.querySelector('.dropdown').classList.add('active');
   }
 }
 

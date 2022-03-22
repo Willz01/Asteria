@@ -68,7 +68,7 @@ main {
   font-family: 'Montserrat';
 }
 
-nav .active {
+.active {
   color: rgb(255, 225, 0);
 }
 
@@ -96,10 +96,8 @@ nav .active {
 }
 
 .dropdown-content a:hover {
-  color: rgb(255, 225, 0);
+  color: rgb(255, 225, 0) !important;
 }
-
-
 
 .dropdown:hover .dropdown-content {
   display: block;
@@ -166,7 +164,7 @@ footer address {
     justify-content: stretch;
   }
 
-  .navigation h2 {
+  .navigation a, .navigation div {
     font-size: 15px;
     width: 100%;
   }

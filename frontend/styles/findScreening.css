@@ -49,6 +49,7 @@
 
 #movie-plot {
   height: 100px;
+  text-align: left;
   font-size: 12px;
   display: -webkit-box;
   overflow: scroll;
@@ -85,11 +86,13 @@
   pointer-events: none;
   align-self: center;
   display: none;
+  font-size: 18px;
 }
 
 .info-screening {
   display: inline-block;
   vertical-align: top;
+  font-size: 22px;
   color: rgb(255, 225, 0);
 }
 
@@ -135,4 +138,15 @@ iframe {
     width: 50px;
   }
 
+  #screening-container {
+  flex-direction: column;
+  }
+
+  .movie-information {
+    width: 100%;
+  }
+  .screening-times {
+  border-top: none;
+  margin-top: 0;
+  }
 }

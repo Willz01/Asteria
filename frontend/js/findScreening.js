@@ -17,13 +17,13 @@ async function getMovies() {
 }
 
 async function getTheatres() {
-  let theatres = await (await fetch('http://localhost:5600/api/theatres')).json();
+  let theatres = await (await fetch('http://localhost:5600/api/theaters')).json();
   return theatres;
 }
 
 async function fillSelections() {
   screenings = await getScreenings();
-  //theatres = getTheatres();
+  theatres = await getTheatres();
   movies = await getMovies();
 
   document.querySelector('#search-button').addEventListener('click', filterScreenings);
@@ -109,10 +109,8 @@ function filterScreenings() {
 
 async function bookScreening(element) {
   let id = element.id;
-  console.log(id)
 
   let screening = await (await fetch('http://localhost:5600/api/screenings/' + id)).json();
-  console.log(screening);
 
   window.sessionStorage.setItem("screening", JSON.stringify(screening));
   let booking = { "bookingId": "", "userId": "", "adults": 0, "children": 0, "seniors": 0 }
