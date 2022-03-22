@@ -12,9 +12,7 @@ function getSavedSession() {
 
 // clear session: for logOut
 function clearSession() {
-  window.sessionStorage.removeItem('userHash')
-  window.localStorage.removeItem('userHash')
-  window.clearSession();
+  window.sessionStorage.clearSession();
 }
 
 function isSavedSession() {

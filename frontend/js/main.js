@@ -64,6 +64,7 @@ async function router() {
   route === '/views/signUp.html';
   route === '/views/newBooking.html' && newBooking();
   route === '/views/signUp.html' && handleAccount();
+  route = '/views/page-not-found.html'
 }
 
 if (isSavedSession()) {
