@@ -37,7 +37,7 @@ async function fillSelections() {
   fillDay();
   fillMovie();
 
-  const chosenMovie = getStorage("filterMovie");
+  const chosenMovie = JSON.parse(window.sessionStorage.getItem("filterMovie"));
 
   if (chosenMovie) {
     movieSelect.value = chosenMovie
@@ -179,7 +179,7 @@ async function generateScreenings(start = 0, end = 20) {
         </div>
       </div>
       <div class="movieMedia">
-         <img
+        <img
         onclick="playVideo(${screening.screeningId})"
         src="${screening.thumbnailUrl}"
         alt=""></img>

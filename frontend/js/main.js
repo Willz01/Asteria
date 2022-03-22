@@ -23,6 +23,7 @@ document.querySelector('body').addEventListener('click', function (event) {
 
 
 function makeMenuChoiceActive(route) {
+  document.querySelector('.dropdown').classList.remove('active');
   // change active link in the menu
   let aTagsInNav = document.querySelectorAll('nav a');
   for (let aTag of aTagsInNav) {
@@ -32,12 +33,27 @@ function makeMenuChoiceActive(route) {
       aTag.classList.add('active');
     }
   }
+
+  if (route === '/findScreening' || route === '/bookings') {
+    document.querySelector('.dropdown').classList.add('active');
+  }
+}
+
+function isLoggedIn() {
+  let user = atob(getSavedSession());
+  if (user.id === undefined) {
+    return false;
+  }
+  return true;
 }
 
 async function router() {
   let route = location.pathname;
   console.log(route);
   makeMenuChoiceActive(route);
+  if (!isLoggedIn() && (route === '/bookings')) {
+    route = '/signUp'
+  }
   // transform route to be a path to a partial
   route = route === '/' ? '/start' : route;
   route = '/views' + route + '.html';
@@ -56,6 +72,7 @@ async function router() {
   route === '/views/signUp.html';
   route === '/views/newBooking.html' && await newBooking();
   route === '/views/signUp.html' && handleAccount();
+  route = '/views/page-not-found.html'
 }
 
 if (isSavedSession()) {
