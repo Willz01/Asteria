@@ -1,8 +1,8 @@
 let searchButton = null;
-let theatreSelect = null;
+let theaterSelect = null;
 let screeningHolder = null;
 let screenings = [];
-let theatres = [];
+let theaters = [];
 let movies = [];
 let filteredScreenings = [];
 
@@ -16,24 +16,24 @@ async function getMovies() {
   return movies;
 }
 
-async function getTheatres() {
-  let theatres = await (await fetch('http://localhost:5600/api/theaters')).json();
-  return theatres;
+async function getTheaters() {
+  let theaters = await (await fetch('http://localhost:5600/api/theaters')).json();
+  return theaters;
 }
 
 async function fillSelections() {
   screenings = await getScreenings();
-  theatres = await getTheatres();
+  theaters = await getTheaters();
   movies = await getMovies();
 
   document.querySelector('#search-button').addEventListener('click', filterScreenings);
 
-  theatreSelect = document.querySelector('#select-theatre');
+  theaterSelect = document.querySelector('#select-theater');
   daySelect = document.querySelector('#select-day');
   movieSelect = document.querySelector('#select-movie');
   screeningHolder = document.querySelector('#screenings-holder');
 
-  fillTheatre();
+  fillTheater();
   fillDay();
   fillMovie();
 
@@ -46,15 +46,15 @@ async function fillSelections() {
 
 }
 
-function fillTheatre() {
+function fillTheater() {
 
-  let html = '<option value="" disabled selected>Select theatre</option>';
+  let html = '<option value="" disabled selected>Select theater</option>';
 
-  for (let { name } of theatres) {
+  for (let { name } of theaters) {
     html += `<option>${name}</option>`;
   }
 
-  theatreSelect.innerHTML = html;
+  theaterSelect.innerHTML = html;
 }
 
 function fillDay() {
@@ -93,15 +93,19 @@ function filterScreenings() {
     return Object.assign({}, screening, movieWithEqualId)
   })
 
-  let screeningsAndMoviesAndTheatres = screeningsAndMovies.map((screening) => {
-    let haveEqualId = (theatre) => theatre.theatreId === screening.theatreId
-    let theatreWithEqualId = theatres.find(haveEqualId)
-    return Object.assign({}, screening, theatreWithEqualId)
+  let screeningsAndMoviesAndTheaters = screeningsAndMovies.map((screening) => {
+    let haveEqualId = (theater) => theater.theaterId === screening.theaterId
+    let theaterWithEqualId = theaters.find(haveEqualId)
+    return Object.assign({}, screening, theaterWithEqualId)
   });
 
-  filteredScreenings = screeningsAndMoviesAndTheatres.filter(e => {
-    return (!theatreSelect.value || e.name === theatreSelect.value) && (!daySelect.value || e.date === daySelect.value) && (!movieSelect.value || e.title === movieSelect.value);
+  console.log(screeningsAndMoviesAndTheaters);
+
+  filteredScreenings = screeningsAndMoviesAndTheaters.filter(e => {
+    return (!theaterSelect.value || e.name === theaterSelect.value) && (!daySelect.value || e.date === daySelect.value) && (!movieSelect.value || e.title === movieSelect.value);
   });
+
+  console.log(filteredScreenings);
 
   generateScreenings();
 
@@ -123,20 +127,31 @@ async function bookScreening(element) {
 function playVideo(screeningId) {
   const iframes = document.querySelectorAll(".iframe");
 
+  let thisScreening;
+  for (let screening of filteredScreenings) {
+    if (screeningId == screening.screeningId) {
+      thisScreening = screening;
+    }
+  }
+
   for (let iframe of iframes) {
     if (iframe.id == screeningId) {
-      iframe.classList.toggle("playingVideo");
+      console.log(iframe.id)
+      iframe.classList.add("playingVideo");
+      iframe.src = `http://www.imdb.com/video/imdb/${thisScreening.link.split("/").pop()}/imdb/embed`;
     }
   }
 }
 
-async function generateScreenings() {
+async function generateScreenings(start = 0, end = 20) {
 
   let html = '';
+  let partOfFilteredScreenings;
 
-  for (let screening of filteredScreenings) {
-
-    let link = screening.link.split("/").pop();
+  if (filteredScreenings.length > end) {
+    partOfFilteredScreenings = filteredScreenings.slice(start, end);
+  }
+  for (let screening of partOfFilteredScreenings) {
 
     html += `
     <div id="screening-container">
@@ -149,7 +164,7 @@ async function generateScreenings() {
         </p>
         <div class="screening-times">
           <div class="screening">
-            <h1 id="${screening.screeningId}" onclick="bookScreening(${screening.screeningId})">${screening.time.slice(0, -3)}</h1>
+            <h1 id="${screening.screeningId}" onclick="bookScreening(${screening.screeningId})">${screening.time}</h1>
             <p>Book this</p>
           </div>
         </div>
@@ -159,13 +174,16 @@ async function generateScreenings() {
         onclick="playVideo(${screening.screeningId})"
         src="${screening.thumbnailUrl}"
         alt=""></img>
-
-        <iframe class="iframe" id="${screening.screeningId}" src="http://www.imdb.com/video/imdb/${link}/imdb/embed"
-        autoplay="true" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" mozallowfullscreen="true"
-        webkitallowfullscreen="true" scrolling="no"></iframe>
+        <iframe class="iframe" id="${screening.screeningId}" src=""
+        frameborder = "0" allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen = "true" mozallowfullscreen = "true"
+        webkitallowfullscreen = "true" scrolling = "no" ></iframe >
       </div>
     </div>
     `;
+  }
+
+  if (filteredScreenings.length > end) {
+    html += `<button id="loadMoreButton" onclick="generateScreenings(${start + 20}, ${end + 20})">Load more screenings</button>`
   }
 
   screeningHolder.innerHTML = html;
