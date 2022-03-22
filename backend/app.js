@@ -40,6 +40,12 @@ app.use('/api/theaters', theaterRouter)
 const bookingRouter = require('./router/bookingrouter')
 app.use('/api/bookings', bookingRouter)
 
+const screeningRouter = require('./router/screeningrouter')
+app.use('/api/screenings', screeningRouter)
+
+const reservedSeatRouter = require('./router/reservedseatrouter')
+app.use('/api/reservedseat', reservedSeatRouter)
+
 app.listen(PORT, () => {
   console.log(`Asteria server running @ PORT: ${PORT}`);
   console.log('Start page served at http://127.0.0.1:5600/');
