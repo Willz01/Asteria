@@ -1,10 +1,11 @@
 async function loadBookingsToTable() {
 
 
-  console.log(atob(getSavedSession()));
+  let userObject = JSON.parse(atob(getSavedSession()));
+  let userID = userObject.userId
+  console.log(userID);
+  let data = await (await fetch(`http://127.0.0.1:5600/api/users/${userID}/bookings-info`)).json()
 
-
-  let data = await (await fetch('http://127.0.0.1:5600/api/users/2/bookings-info')).json()
   console.log(data[0].bookingId);
   let currentBookingId = data[0].bookingId;
   let html = "";

@@ -531,9 +531,9 @@ const movies = [
 ];
 
 
-function fillMovieCards() {
+async function fillMovieCards() {
   let movies = await (await fetch('http://localhost:5600/api/movies')).json();
-
+  let html = ""
   for (let movie of movies) {
     html += `
     <div class="movie-card">
