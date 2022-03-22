@@ -1,0 +1,109 @@
+
+.view_booking {
+  width: auto;
+  background-color: black;
+  opacity: 0.90;
+  border: 2px solid rgb(131, 131, 131);;
+  height: 100%;
+  color: white;
+  margin: 2%;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.view_booking__header {
+  display: grid;
+}
+
+.view_booking__header h1 {
+  font-size: 40px;
+  align-items: center;
+  text-align: center;
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.view_booking__header h2 {
+  font-size: 30px;
+  padding: 10px;
+  margin: 5px 2%;
+  margin-bottom: 10px;
+  text-align: left;
+  border-bottom: 1px solid white;
+  grid-column-start: 1;
+  grid-column-end: 7;
+}
+
+.view_booking__header h3 {
+  align-self: baseline;
+  font-size: 25px;
+  padding-top: 40px;
+  padding-right: 30px;
+  margin-top: 20px;
+  margin: 5px 2%;
+  text-align: right;
+  grid-column-start: 7;
+  grid-column-end: 12;
+}
+
+.view_booking__header p {
+  align-self: center;
+  text-align: left;
+  grid-column: 2;
+}
+
+.view_booking_container {
+    text-align: left;
+    padding: 8px;
+  align-items: center;
+  background-color:white;
+  color: grey;
+
+} 
+table, th, td {
+  border: 3px inset gray;
+}
+#graybooking{
+  background-color: gray;
+}
+.view_booking_container th{
+ }
+
+   
+.seats_container {
+  align-self: flex-start;
+  padding: auto;
+  margin: 1%;
+  width: 79%;
+  height: 50vh;
+  border-radius: 5px;
+  background-color: gray;
+}
+
+
+
+@media only screen and (max-width: 480px) {
+  /* New Booking */
+  .view_booking__header h1 {
+  font-size: 24px;
+  padding: 10px;
+  margin: 5px 2%;
+  text-align: left;
+  border-bottom: 1px solid white;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.view_booking__header h2 {
+  font-size: 15px;
+  padding-top: 10px;
+  padding-right: 10px;
+  margin-top: 20px;
+  margin: 5px 2%;
+  text-align: right;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+}

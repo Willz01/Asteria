@@ -28,6 +28,12 @@ function getAllUsers(req, res, next) {
   res.send(all)
 }
 
+function getMyBookingByUserId(req, res, next) {
+  runQuery(res, {},
+    `SELECT * FROM bookingsInfo WHERE userid = ${req.params.id}`, false);
+}
+
+
 
 function postNewUser(req, res) {
   delete req.body.id;
@@ -52,6 +58,27 @@ function addNewUser(req, res) {
 
 }
 
+
+function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
+  let result;
+  try {
+    let stmt = db.prepare(sqlForPreparedStatement);
+
+    let method = sqlForPreparedStatement.trim().toLowerCase().indexOf('select') === 0 ?
+      'all' : 'run';
+    result = stmt[method](parameters);
+  }
+  catch (error) {
+
+    result = { _error: error + '' };
+  }
+  if (onlyOne) { result = result[0]; }
+  result = result || null;
+  res.status(result ? (result._error ? 500 : 200) : 404);
+  res.json(result);
+}
+
 exports.getUser = getUser
 exports.getAllUsers = getAllUsers
 exports.postNewUser = postNewUser
+exports.getMyBookingByUserId = getMyBookingByUserId
