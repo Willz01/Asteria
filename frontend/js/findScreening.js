@@ -57,13 +57,21 @@ function fillTheater() {
   theaterSelect.innerHTML = html;
 }
 
+function formatDate(input) {
+  let date = new Date(input.replace(/ /g, 'T'));
+  return [
+    "January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"
+  ][date.getMonth()] + ' ' + date.getDate();
+}
+
 function fillDay() {
 
   let html = '<option value="" disabled selected>Select day</option>';
   let days = [];
   for (let { date } of screenings) {
-    if (!days.includes(date)) {
-      days.push(date);
+    if (!days.includes(formatDate(date))) {
+      days.push(formatDate(date));
     }
   }
 
@@ -102,7 +110,7 @@ function filterScreenings() {
   console.log(screeningsAndMoviesAndTheaters);
 
   filteredScreenings = screeningsAndMoviesAndTheaters.filter(e => {
-    return (!theaterSelect.value || e.name === theaterSelect.value) && (!daySelect.value || e.date === daySelect.value) && (!movieSelect.value || e.title === movieSelect.value);
+    return (!theaterSelect.value || e.name === theaterSelect.value) && (!daySelect.value || formatDate(e.date) === daySelect.value) && (!movieSelect.value || e.title === movieSelect.value);
   });
 
   console.log(filteredScreenings);
@@ -146,7 +154,7 @@ function playVideo(screeningId) {
 async function generateScreenings(start = 0, end = 20) {
 
   let html = '';
-  let partOfFilteredScreenings;
+  let partOfFilteredScreenings = filteredScreenings;
 
   if (filteredScreenings.length > end) {
     partOfFilteredScreenings = filteredScreenings.slice(start, end);
@@ -159,7 +167,8 @@ async function generateScreenings(start = 0, end = 20) {
         <h2>${screening.title}</h2>
         <p id="movie-plot">${screening.plot}</p>
         <p>
-        <span class="info-screening left">2 hours</span>
+        <span class="info-screening">${screening.date}</span>
+        <span class="info-screening">${screening.duration}</span>
         <span class="info-screening">${screening.name}</span>
         </p>
         <div class="screening-times">
