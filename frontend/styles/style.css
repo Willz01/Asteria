@@ -15,7 +15,6 @@ body {
   background-position: center center;
   flex-direction: column;
   -ms-overflow-style: none;
-  min-width: 400px;
   min-height: 100vh;
   scrollbar-width: none;
 }
@@ -68,7 +67,7 @@ main {
   font-family: 'Montserrat';
 }
 
-nav .active {
+.active {
   color: rgb(255, 225, 0);
 }
 
@@ -96,10 +95,8 @@ nav .active {
 }
 
 .dropdown-content a:hover {
-  color: rgb(255, 225, 0);
+  color: rgb(255, 225, 0) !important;
 }
-
-
 
 .dropdown:hover .dropdown-content {
   display: block;
@@ -130,12 +127,11 @@ p {
 }
 
 footer {
+  padding: 15px;
+  margin-top: auto;
   text-align: center;
-  padding: 20px;
-  margin-top: 30px;
-  padding: 20px;
   background-color: rgb(45, 45, 45);
-  width: auto;
+  width: 100%;
 }
 
 footer h3 {
@@ -148,7 +144,7 @@ footer address {
   color: white;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 480px) {
 
   main {
     padding: 0 20px;
@@ -159,8 +155,6 @@ footer address {
   }
 
   .heading h1 {
-    margin-top: 0;
-    padding: 10px;
     font-size: 40px;
   }
 
@@ -170,12 +164,8 @@ footer address {
     justify-content: space-around;
   }
 
-  .navigation h2 {
+  .navigation a, .navigation div {
     font-size: 15px;
-    width: 100%;
   }
 
-  footer h3 {
-    font-size: 11px;
-  }
 }

@@ -14,6 +14,9 @@ router.get('/all', userServices.getAllUsers)
 
 router.post('/signUp', userServices.postNewUser)
 
+// ger users bookings information
+router.get('/:id/bookings-info', userServices.getMyBookingByUserId)
+
 // '/users/:id/bookings' -- booking router
 router.use('/:id/bookings', bookingRouter)
 

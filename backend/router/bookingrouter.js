@@ -13,10 +13,13 @@ router.get('/:id', bookingServices.getBookingById)
 // post new booking
 router.post('/new-booking', bookingServices.newBooking)
 
-router.get('/full-booking/:id', bookingServices.getBookingAndSeats)
+// router.get('/full-booking/:id', bookingServices.getBookingAndSeats)
+
+
 
 // edit user's booking
-router.put('/:id', bookingServices.updateBooking)
+// router.put('/:id', bookingServices.updateBooking)
+
 
 // delete user's booking
 //router.delete('/:id', bookingServices.deleteBooking)

@@ -1,3 +1,5 @@
+
+
 document.querySelector('body').addEventListener('click', function (event) {
   let aTag = event.target.closest('a');
 
@@ -32,21 +34,10 @@ function makeMenuChoiceActive(route) {
   }
 }
 
-function isLoggedIn() {
-  let user = atob(getSavedSession());
-  if (user.id === undefined) {
-    return false;
-  }
-  return true;
-}
-
 async function router() {
   let route = location.pathname;
-  makeMenuChoiceActive(route);
-  if (!isLoggedIn() && (route === '/bookings')) {
-    route = '/signUp'
-  }
   console.log(route);
+  makeMenuChoiceActive(route);
   // transform route to be a path to a partial
   route = route === '/' ? '/start' : route;
   route = '/views' + route + '.html';
@@ -60,11 +51,11 @@ async function router() {
   // if the route is '/partials/products.html';
   route === '/views/start.html' && fillMovieCards();
   route === '/views/bookings.html';
-  route === '/views/findScreening.html' && fillSelections()
+
+  route === '/views/findScreening.html' && fillSelections();
   route === '/views/signUp.html';
-  route === '/views/newBooking.html' && newBooking();
+  route === '/views/newBooking.html' && await newBooking();
   route === '/views/signUp.html' && handleAccount();
-  route = '/views/page-not-found.html'
 }
 
 if (isSavedSession()) {
@@ -84,3 +75,11 @@ window.addEventListener('popstate', router);
 
 // run the router on page load
 router();
+
+document.querySelector('.booking-btn').addEventListener('click', () => {
+  if (isSavedSession()) {
+
+  } else {
+    window.location.href = '/signUp'
+  }
+})
