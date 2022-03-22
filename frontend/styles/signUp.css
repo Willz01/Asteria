@@ -1,0 +1,6 @@
+#bootstrap-override a:hover {
+  color: rgb(255, 225, 0);
+}
+#bootstrap-override > .active {
+  color: rgb(255, 225, 0);
+}

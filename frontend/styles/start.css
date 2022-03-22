@@ -11,11 +11,13 @@
 .movie-card {
   display: flex;
   align-items: center;
+  justify-content: space-around;
   min-height: 150px;
   max-width: 100%;
   background-color: rgb(45, 45, 45);
   border-radius: 3px;
   border: 1.5px solid rgb(131, 131, 131);
+  padding: 10px;
   margin: 20px;
 }
 
@@ -36,136 +38,19 @@
 .movie-card p {
   padding-top: 10px;
   font-size: 12px;
+  text-align: left;
   display: -webkit-box;
   overflow: hidden;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
 
-.movie-card img {
-  width: 100px;
-  height: auto;
-  padding-right: 10px;
+.movie-posters img {
+  height: 150px;
 }
-
-
-/* New Booking */
-.new_booking {
-  width: auto;
-  background-color: black;
-  opacity: 0.90;
-  border: 2px solid rgb(131, 131, 131);
-  ;
-  height: 100%;
-  color: white;
-  margin: 2%;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-}
-
-.new_booking__header {
-  display: grid;
-}
-
-.new_booking__header h1 {
-  font-size: 40px;
-  align-items: center;
-  text-align: center;
-  grid-column-start: 1;
-  grid-column-end: 2;
-}
-
-.new_booking__header h2 {
-  font-size: 30px;
-  padding: 10px;
-  margin: 5px 2%;
-  margin-bottom: 10px;
-  text-align: left;
-  border-bottom: 1px solid white;
-  grid-column-start: 1;
-  grid-column-end: 7;
-}
-
-.new_booking__header h3 {
-  align-self: baseline;
-  font-size: 25px;
-  padding-top: 40px;
-  padding-right: 30px;
-  margin-top: 20px;
-  margin: 5px 2%;
-  text-align: right;
-  grid-column-start: 7;
-  grid-column-end: 12;
-}
-
-.new_booking__header p {
-  align-self: center;
-  text-align: left;
-  grid-column: 2;
-}
-
-.ticket_seat_selection {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.ticket_selection {
-  display: flex;
-  flex-direction: column;
-  padding: 2% 5%;
-  grid-template-columns: 3;
-}
-
-.ticket {
-  display: grid;
-  width: 20%;
-  grid-template-columns: 8;
-  align-items: center;
-}
-
-.ticket h1 {
-  font-size: 30px;
-  padding: 5px;
-  margin: 5px;
-  text-align: right;
-  grid-column-start: 1;
-  grid-column-end: 5;
-}
-
-.ticket_button_less {
-  padding: 3px;
-  margin: 2px;
-  width: 20px;
-  height: 20px;
-  grid-column-start: 6;
-  grid-column-end: 7;
-}
-
-.ticket_button_more {
-  padding: 3px;
-  margin: 2px;
-  width: 20px;
-  height: 20px;
-  grid-column-start: 7;
-  grid-column-end: 8;
-}
-
-.seats_container {
-  align-self: flex-start;
-  padding: auto;
-  margin: 1%;
-  width: 79%;
-  height: 50vh;
-  border-radius: 5px;
-  background-color: gray;
-}
-
 
 @media only screen and (max-width: 480px) {
 
-  /* Start */
   .movie-card {
     margin: 10px;
     max-height: 150px;
@@ -181,29 +66,8 @@
   }
 
   .movie-card img {
-    width: 70px;
-  }
-
-  /* New Booking */
-  .new_booking__header h1 {
-    font-size: 24px;
-    padding: 10px;
-    margin: 5px 2%;
-    text-align: left;
-    border-bottom: 1px solid white;
-    grid-column-start: 1;
-    grid-column-end: 3;
-  }
-
-  .new_booking__header h2 {
-    font-size: 15px;
-    padding-top: 10px;
-    padding-right: 10px;
-    margin-top: 20px;
-    margin: 5px 2%;
-    text-align: right;
-    grid-column-start: 1;
-    grid-column-end: 3;
+    width: 120px;
+    height: auto;
   }
 
 }

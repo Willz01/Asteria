@@ -22,3 +22,4 @@ function isSavedSession() {
   else
     return true
 }
+

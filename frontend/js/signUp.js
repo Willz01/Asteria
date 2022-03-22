@@ -1,4 +1,3 @@
-
 const API_URL_SIGN_UP = 'http://127.0.0.1:5600/api/users/signUp'
 const API_URL_SIGN_IN = 'http://127.0.0.1:5600/api/users/signIn'
 
@@ -57,7 +56,7 @@ function handleAccount() {
 
       var auth = {
         email: email,
-        password: btoa(password)
+        password: cyrb53(password).toString()
       }
 
       handAuthData(API_URL_SIGN_IN, auth)
@@ -67,7 +66,7 @@ function handleAccount() {
       var auth = {
         email: email,
         userName: userName,
-        password: btoa(password)
+        password: cyrb53(password).toString()
       }
       handAuthData(API_URL_SIGN_UP, auth)
     }
@@ -90,11 +89,13 @@ async function handAuthData(url = '', data = {}) {
   });
 
   let r = response
+  let userObject = await r.json();
+
   if (r.status === 404) {  // login failure
     alert('Invalid Login credentials')
   } else if (r.status === 200) {  // sign up or login success
     // success
-    saveSession(data)
+    saveSession(userObject)
     window.location.replace('/')
   } else if (r.status === 501) { // sign up failure
     alert('Username or email taken')
@@ -106,3 +107,16 @@ async function handAuthData(url = '', data = {}) {
   console.log(response);
   console.log(typeof response);
 }
+
+// https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
+const cyrb53 = function (str, seed = 0) {
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0, ch; i < str.length; i++) {
+    ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+};

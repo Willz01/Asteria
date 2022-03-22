@@ -9,7 +9,12 @@ const PORT = 5601
 
 app.use(express.static(path.join(__dirname, '../', 'frontend')))
 
-app.all("/*", (req, res) => {
+app.all('/views/*', (req, res) => {
+  res.set('Content-Type', 'text/html');
+  res.sendFile(path.join(__dirname, 'views', 'page-not-found.html'));
+});
+
+app.all("*", (req, res) => {
   res.sendFile(path.join(
     __dirname, '../',
     'frontend',

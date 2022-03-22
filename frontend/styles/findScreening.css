@@ -41,6 +41,7 @@
 }
 
 .movie-information {
+  width: 60%;
   display: flex;
   flex-direction: column;
   font-family: 'Montserrat';
@@ -48,6 +49,7 @@
 
 #movie-plot {
   height: 100px;
+  text-align: left;
   font-size: 12px;
   display: -webkit-box;
   overflow: scroll;
@@ -84,11 +86,13 @@
   pointer-events: none;
   align-self: center;
   display: none;
+  font-size: 18px;
 }
 
 .info-screening {
   display: inline-block;
   vertical-align: top;
+  font-size: 22px;
   color: rgb(255, 225, 0);
 }
 
@@ -105,10 +109,27 @@
   display: flex;
 }
 
-#screening-container img {
-  padding: 0 20px 0 40px;
-  width: 50%;
+.movieMedia {
+position: relative;
+}
+
+.movieMedia img {
+  height: 100%;
+  width: 100%;
   object-fit: cover;
+}
+
+iframe {
+  position: absolute;
+  z-index: -2;
+  top: 0;
+  right: 0;
+  width:100%; 
+  height:100%;
+}
+
+.playingVideo{
+  z-index: 2;
 }
 
 @media only screen and (max-width: 480px) {
@@ -117,4 +138,15 @@
     width: 50px;
   }
 
+  #screening-container {
+  flex-direction: column;
+  }
+
+  .movie-information {
+    width: 100%;
+  }
+  .screening-times {
+  border-top: none;
+  margin-top: 0;
+  }
 }

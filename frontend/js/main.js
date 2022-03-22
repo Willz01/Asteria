@@ -23,6 +23,7 @@ document.querySelector('body').addEventListener('click', function (event) {
 
 
 function makeMenuChoiceActive(route) {
+  document.querySelector('.dropdown').classList.remove('active');
   // change active link in the menu
   let aTagsInNav = document.querySelectorAll('nav a');
   for (let aTag of aTagsInNav) {
@@ -31,6 +32,10 @@ function makeMenuChoiceActive(route) {
     if (href === route) {
       aTag.classList.add('active');
     }
+  }
+
+  if (route === '/findScreening' || route === '/bookings') {
+    document.querySelector('.dropdown').classList.add('active');
   }
 }
 
@@ -58,6 +63,7 @@ async function router() {
 }
 
 if (isSavedSession()) {
+
   console.log(getSavedSession());
   document.getElementById('sign-thing').innerText = 'SIGN OUT'
   document.getElementById('sign-thing').style.color = 'red'
@@ -73,3 +79,11 @@ window.addEventListener('popstate', router);
 
 // run the router on page load
 router();
+
+document.querySelector('.booking-btn').addEventListener('click', () => {
+  if (isSavedSession()) {
+
+  } else {
+    window.location.href = '/signUp'
+  }
+})
