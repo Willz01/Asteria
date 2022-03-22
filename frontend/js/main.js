@@ -39,10 +39,21 @@ function makeMenuChoiceActive(route) {
   }
 }
 
+function isLoggedIn() {
+  let user = atob(getSavedSession());
+  if (user.id === undefined) {
+    return false;
+  }
+  return true;
+}
+
 async function router() {
   let route = location.pathname;
   console.log(route);
   makeMenuChoiceActive(route);
+  if (isLoggedIn() && (route === '/bookings')) {
+    route = '/signUp'
+  }
   // transform route to be a path to a partial
   route = route === '/' ? '/start' : route;
   route = '/views' + route + '.html';
@@ -56,10 +67,12 @@ async function router() {
   // if the route is '/partials/products.html';
   route === '/views/start.html' && fillMovieCards();
   route === '/views/bookings.html' && loadBookingsToTable();
+
   route === '/views/findScreening.html' && fillSelections();
   route === '/views/signUp.html';
-  route === '/views/newbooking.html' && loadAndDisplayTheSeats();
+  route === '/views/newBooking.html' && await newBooking();
   route === '/views/signUp.html' && handleAccount();
+  route = '/views/page-not-found.html'
 }
 
 if (isSavedSession()) {

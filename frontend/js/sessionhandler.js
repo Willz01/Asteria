@@ -1,4 +1,3 @@
-
 // save logged user session
 function saveSession(user = {}) {
   window.sessionStorage.setItem('userHash', btoa(JSON.stringify(user)))
@@ -22,4 +21,3 @@ function isSavedSession() {
   else
     return true
 }
-

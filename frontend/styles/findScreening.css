@@ -119,6 +119,8 @@ main {
 .movieMedia {
   max-width: 500px;
 position: relative;
+  overflow: hidden;
+  width: 100%;
 }
 
 .movieMedia img {
@@ -131,9 +133,11 @@ iframe {
   position: absolute;
   z-index: -2;
   top: 0;
+  left: 0;
+  bottom: 0;
   right: 0;
-  width:100%; 
-  height:100%;
+  width: 100%;
+  height: 100%;
 }
 
 .playingVideo{

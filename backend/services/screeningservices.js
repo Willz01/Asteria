@@ -59,6 +59,12 @@ function newScreening(req, res, next) {
       ${req.body.date}, ${req.body.time}, ${req.body.theaterId}, ${req.body.movieId})`);
 }
 
+function deleteSeatReservation(req, res, next) {
+  const row = db.prepare(
+    `DELETE FROM reservedseats WHERE seatId = ? AND screeningId = ?`).run(req.body.seatId, req.body.screeningId);
+  console.log(row)
+}
+
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
   let result;
   try {
@@ -83,4 +89,5 @@ exports.getAllOfScreenings = getAllOfScreenings
 exports.getScreeningById = getScreeningById
 exports.getScreenings = getScreenings
 exports.newScreening = newScreening
+exports.deleteSeatReservation = deleteSeatReservation
 
