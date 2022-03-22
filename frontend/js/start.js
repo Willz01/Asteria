@@ -1,8 +1,16 @@
+
 /*
 async function getMovies() {
   let movies = await (await fetch('http://localhost:5600/api/movies')).json();
   console.log(movies)
 }
+
+async function lookAtMovie(movieTitle) {
+  window.sessionStorage.setItem("filterMovie", JSON.stringify(movieTitle));
+
+  history.pushState(null, null, "/findScreening");
+  router();
+
 
 getMovies()
 */
@@ -524,8 +532,8 @@ const movies = [
 
 
 function fillMovieCards() {
+  let movies = await (await fetch('http://localhost:5600/api/movies')).json();
 
-  let html = ''
   for (let movie of movies) {
     html += `
     <div class="movie-card">
