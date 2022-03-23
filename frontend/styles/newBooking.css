@@ -68,7 +68,7 @@
 }
 
 .ticket {
-  display: grid;
+  display: flex;
   width: 20%;
   grid-template-columns: 8;
   align-items: center;

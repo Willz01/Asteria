@@ -119,15 +119,39 @@ function filterScreenings() {
 
 }
 
-async function bookScreening(element) {
-  let id = element.id;
-
+async function bookScreening(id) {
   let screening = await (await fetch('http://localhost:5600/api/screenings/' + id)).json();
+  setStorage("screening", screening);
 
-  window.sessionStorage.setItem("screening", JSON.stringify(screening));
-  let booking = { "bookingId": "", "userId": "", "adults": 0, "children": 0, "seniors": 0 }
-  window.sessionStorage.setItem("booking", JSON.stringify(booking));
+  let booking = getStorage("booking");
 
+  if (booking === (undefined || null)) {
+    booking = {
+      "bookingId": "",
+      "userId": "",
+      "adults": 0,
+      "children": 0,
+      "seniors": 0
+    }
+    setStorage("booking", booking);
+  }
+
+  if (isSavedSession()) {
+    let user = getSavedSession()
+    let reservedseats = [];
+    if (user.userId && booking.bookingId != (undefined || null)) {
+      let seatReservations = await (await fetch("http://localhost:5600/api/bookings/full-booking/" + booking.bookingId)).json();
+      for (let i = 0; i < seatReservations.length; i++) {
+        const reservedSeat = seatReservations[i];
+        if (reservedseats === null) {
+          reservedseats = [reservedSeat.seatId]
+        } else {
+          reservedseats.push(reservedSeat.seatId)
+        }
+      }
+      setStorage("reservedSeats", reservedseats)
+    }
+  }
   history.pushState(null, null, "/newBooking");
   router();
 }
@@ -160,6 +184,9 @@ async function generateScreenings(start = 0, end = 20) {
     partOfFilteredScreenings = filteredScreenings.slice(start, end);
   }
   for (let screening of partOfFilteredScreenings) {
+    let timeArray = screening.time.split(":");
+    let hr = timeArray[0];
+    let min = timeArray[1];
 
     html += `
     <div id="screening-container">
@@ -173,7 +200,7 @@ async function generateScreenings(start = 0, end = 20) {
         </p>
         <div class="screening-times">
           <div class="screening">
-            <h1 id="${screening.screeningId}" onclick="bookScreening(${screening.screeningId})">${screening.time}</h1>
+            <h1 onclick="bookScreening(${screening.screeningId})">${hr}:${min}</h1>
             <p>Book this</p>
           </div>
         </div>

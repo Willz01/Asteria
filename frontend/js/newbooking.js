@@ -1,55 +1,68 @@
 async function reserveSeat(seatId) {
   console.log(seatId)
-  let user = JSON.parse(atob(getSavedSession()))
-  console.log(user.userId)
-  let booking = getStorage("booking");
-  if (user.userId === undefined) {
+  let reservedSeats = getStorage("reservedSeats")
+
+  if (reservedSeats != null) {
+    console.log
+    reservedSeats.push(seatId)
+  } else {
+    reservedSeats = [seatId]
+  }
+
+  if (!isSavedSession()) {
     history.pushState(null, null, "http://localhost:5601/signUp");
     router();
-  }
-
-  let totalPersons = booking.adults + booking.children + booking.seniors;
-  if (totalPersons > 0) {
-    let databaseBooking = await (await fetch("http://localhost:5600/api/bookings/" + booking.bookingId)).json();
-    console.log("db: " + databaseBooking)
-
-    if (databaseBooking === null) {
-      await fetch("http://localhost:5600/api/bookings/new-booking", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "bookingId": booking.bookingId,
-          "userId": booking.userId,
-          "adults": booking.adults,
-          "children": booking.children,
-          "seniors": booking.seniors,
-        })
-      });
-    }
-    let screening = getStorage("screening");
-    let reservation = await (await fetch("http://localhost:5600/api/bookings/full-booking/" + booking.bookingId)).json();
-    if (reservation != null && totalPersons > 0) {
-      await fetch("http://localhost:5600/api/reservedseat/new-reservation", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "bookingId": booking.bookingId,
-          "screeningId": screening.screeningId,
-          "seatId": seatId,
-          "dateTime": Date.now(),
-          "isTemp": 1,
-        })
-      });
-    }
   } else {
-    alert("Please add tickets to add seats")
+    let user = JSON.parse(atob(getSavedSession()))
+    console.log(user.userId)
+    let booking = getStorage("booking");
+    let totalPersons = booking.adults + booking.children + booking.seniors;
+    console.log(totalPersons)
+    if (totalPersons + 1 > reservedSeats.length) {
+      let databaseBooking = await (await fetch("http://localhost:5600/api/bookings/" + booking.bookingId)).json();
+      console.log("db: " + databaseBooking)
+
+      if (databaseBooking === null) {
+        await fetch("http://localhost:5600/api/bookings/new-booking", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "bookingId": booking.bookingId,
+            "userId": booking.userId,
+            "adults": booking.adults,
+            "children": booking.children,
+            "seniors": booking.seniors,
+          })
+        });
+      }
+
+      let screening = getStorage("screening");
+      let reservation = await (await fetch("http://localhost:5600/api/bookings/full-booking/" + booking.bookingId)).json();
+      if (reservation != null && totalPersons > reservation.length) {
+        await fetch("http://localhost:5600/api/reservedseat/new-reservation", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "bookingId": booking.bookingId,
+            "screeningId": screening.screeningId,
+            "seatId": seatId,
+            "dateTime": Date.now(),
+            "isTemp": 1,
+          })
+        });
+      }
+      setStorage("reservedSeats", reservedSeats)
+      console.log(reservedSeats)
+      history.pushState(null, null, "/newBooking");
+      router();
+    } else {
+      alert("Please add tickets to add seats")
+    }
   }
-  document.window.location.reload(false)
-  newBooking()
 }
 
 async function unreserveSeat(seatId) {
@@ -60,6 +73,23 @@ async function unreserveSeat(seatId) {
     "seatId": seatId,
   }
 
+  let reservedSeats = getStorage("reservedSeats")
+  console.log(reservedSeats)
+  if (reservedSeats != null) {
+    console.log(reservedSeats)
+    for (let i = 0; i < reservedSeats.length; i++) {
+      const element = reservedSeats[i];
+      if (element === seatId) {
+        reservedSeats.splice(i, 1);
+      }
+    }
+  }
+
+  console.log(reservedSeats)
+  setStorage("reservedSeats", reservedSeats)
+  history.pushState(null, null, "/newBooking");
+  router();
+
   await fetch("http://localhost:5600/api/reservedseat/delete", {
     method: 'DELETE',
     headers: {
@@ -67,8 +97,7 @@ async function unreserveSeat(seatId) {
     },
     body: JSON.stringify(reqBody)
   });
-  window.location.reload()
-  newBooking();
+
 }
 
 async function increaseAttendees(type) {
@@ -81,7 +110,8 @@ async function increaseAttendees(type) {
     booking.seniors++;
   }
   setStorage("booking", booking);
-  newBooking();
+  history.pushState(null, null, "/newBooking");
+  router();
 }
 
 async function reduceAttendees(type) {
@@ -101,16 +131,35 @@ async function reduceAttendees(type) {
     }
   }
   setStorage("booking", booking);
-  newBooking();
+  history.pushState(null, null, "/newBooking");
+  router();
+}
+
+async function confirmBooking() {
+  let reservation = await (await fetch("http://localhost:5600/api/bookings/full-booking/" + booking.bookingId)).json();
+  if (reservation != null && totalPersons > reservation.length) {
+    await fetch("http://localhost:5600/api/reservedseat/new-reservation", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "bookingId": booking.bookingId,
+        "screeningId": screening.screeningId,
+        "seatId": seatId,
+        "dateTime": Date.now(),
+        "isTemp": 0,
+      })
+    });
+  }
 }
 
 async function newBooking() {
   let theaterScreening = document.querySelector(".new_booking");
   let screening = getStorage("screening");
-  console.log(screening);
-  window.addEventListener('resize', newBooking);
-
+  let reservedSeats = getStorage("reservedSeats")
   let booking = getStorage("booking");
+
   if (isSavedSession()) {
     let user = JSON.parse(atob(getSavedSession()))
     if (booking.bookingId === '') {
@@ -119,9 +168,48 @@ async function newBooking() {
     }
   }
 
-  console.log(booking);
-
   setStorage("booking", booking);
+  window.addEventListener('resize', newBooking);
+
+  let allReservations = await (await fetch('http://localhost:5600/api/reservedseat/screening/' + screening.screeningId)).json();
+
+  for (let i = 0; i < allReservations.length; i++) {
+    let reservation = allReservations[i];
+    if (reservation.bookingId === booking.bookingId) {
+      console.log(reservation)
+      if (reservedSeats.length === 0) {
+        reservedSeats = [reservation.seatId];
+      } else {
+        reservedSeats.push(reservation.seatId);
+      }
+    }
+    if (reservation.isTemp === 1) {
+      let now = Date.now();
+      if (reservation.dateTime + (1000 * 60) * 5 < now) {
+        const reqBody = {
+          "seatId": reservation.seatId,
+          "screeningId": screening.screeningId
+        }
+
+        const response = await fetch("http://localhost:5600/api/screenings/removeSeatReservation", {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(reqBody)
+        });
+
+        await fetch('http://localhost:5600/api/bookings/' + reservation.bookingId, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: null
+        });
+      }
+    }
+  }
+
   let timeArray = screening.time.split(":");
   let hr = timeArray[0];
   let min = timeArray[1];
@@ -159,14 +247,14 @@ async function newBooking() {
               <h1>${booking.seniors}</h1>
             </li>
           </ul>
-          <button>Confirm Booking</button>
+          <button onclick="confirmBooking()">Confirm Booking</button>
       </div>
       <div class="seats_container">
       <svg version="1.1" viewBox="0 0 500 600" 
             preserveAspectRatio="xMinYMin meet"" class="svg-content">
             `;
 
-  let allReservations = await (await fetch('http://localhost:5600/api/reservedseat/screening/' + screening.screeningId)).json();
+
 
   let sizing = 0;
   let columnSize = (500) / (screening.mainColumns * 2);
@@ -184,40 +272,12 @@ async function newBooking() {
     for (let column = 0; column < screening.mainColumns; column++) {
       console.log(allReservations.length)
       let found = false;
-
-      for (let i = 0; i < allReservations.length; i++) {
-        let reservation = allReservations[i];
-        if (reservation.isTemp === 1) {
-          let now = Date.now();
-          if (reservation.dateTime + (1000 * 60) * 5 < now) {
-            const reqBody = {
-              "seatId": reservation.seatId,
-              "screeningId": screening.screeningId
-            }
-
-            const response = await fetch("http://localhost:5600/api/screenings/removeSeatReservation", {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(reqBody)
-            });
-
-            await fetch('http://localhost:5600/api/bookings/' + reservation.bookingId, {
-              method: 'DELETE'
-            });
-          }
-        }
-        console.log(reservation.seatId)
-        if (reservation.seatId === count) {
-          console.log("inside reservation.seatid === count")
-          if (reservation.bookingId != booking.bookingId) {
-            html += `<rect fill="grey" x="${x_pos}" height="${sizing}" y="${y_pos}"
-            width="${sizing}" rx="4" />`
-            found = true
-            break;
-          } else {
-            console.log("inside user seatarray")
+      console.log(reservedSeats)
+      if (reservedSeats != (undefined || null)) {
+        for (let i = 0; i < reservedSeats.length; i++) {
+          let reservedSeat = reservedSeats[i];
+          console.log(reservedSeat)
+          if (reservedSeat === count) {
             html += `<rect fill="blue" x="${x_pos}" height="${sizing}" y="${y_pos}"
             width="${sizing}" rx="4" onclick="unreserveSeat(${count})"/>`
             found = true
@@ -225,6 +285,21 @@ async function newBooking() {
           }
         }
       }
+      if (!found) {
+        for (let i = 0; i < allReservations.length; i++) {
+          let reservation = allReservations[i];
+          if (reservation.seatId === count) {
+            console.log("inside reservation.seatid === count")
+            if (reservation.bookingId != booking.bookingId) {
+              html += `<rect fill="grey" x="${x_pos}" height="${sizing}" y="${y_pos}"
+            width="${sizing}" rx="4" />`
+              found = true
+              break;
+            }
+          }
+        }
+      }
+
       if (!found) {
         html += `<rect fill="rgb(255, 225, 0)" x="${x_pos}" height="${sizing}" y="${y_pos}"
           width="${sizing}" rx="4" onclick="reserveSeat(${count})"/>`;
@@ -243,3 +318,4 @@ async function newBooking() {
 
   theaterScreening.innerHTML = html;
 }
+
