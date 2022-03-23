@@ -24,15 +24,11 @@ function newBooking(req, res, next) {
 }
 
 function updateBooking(req, res, next) {
-  runQuery(`
-    UPDATE bookings 
-    SET
-    userId = ${req.body.userId}, 
-    adults = ${req.body.adults},
-    children = ${req.body.children},
-    seniors = ${req.body.seniors}
-    WHERE bookingId = ${req.body.bookingId}
-  `);
+  console.log(req.body)
+  const row = db.
+    prepare(' UPDATE bookings SET adults = ? children = ? seniors = ? WHERE bookingId = ?')
+    .run(req.body.adults, req.body.children, req.body.seniors, req.params.bookingId);
+  console.log(row);
 }
 
 function deleteBooking(req, res, next) {
@@ -44,9 +40,24 @@ function deleteBooking(req, res, next) {
 function getBookingAndSeats(req, res, next) {
   console.log(req.body)
   runQuery(res, {},
-    `INSERT INTO seats(taken, tempReserved, screeningId, bookingId, seatNumber) VALUES(
-      FALSE, TRUE, ${req.body.screeningId}, ${req.body.bookingId}, ${req.body.seatNumber})`);
-}
+    `SELECT 
+    bookings.bookingId,
+    bookings.userId,
+    bookings.adults,
+    bookings.children,
+    bookings.seniors,
+    reservedseats.reservedSeatId,
+    reservedseats.screeningId,
+    reservedseats.seatId,
+    reservedseats.dateTime,
+    reservedseats.isTemp
+    FROM bookings
+    JOIN reservedseats
+    ON bookings.bookingId = reservedseats.bookingId
+    WHERE bookings.bookingId = ${req.params.id}
+    `);
+};
+
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
   let result;
   try {
