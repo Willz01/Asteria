@@ -30,12 +30,14 @@ async function fillSelections() {
 
   theaterSelect = document.querySelector('#select-theater');
   daySelect = document.querySelector('#select-day');
+  ageSelect = document.querySelector('#select-age');
   movieSelect = document.querySelector('#select-movie');
   screeningHolder = document.querySelector('#screenings-holder');
 
   fillTheater();
   fillDay();
   fillMovie();
+  fillAge();
 
   const chosenMovie = JSON.parse(window.sessionStorage.getItem("filterMovie"));
 
@@ -82,6 +84,23 @@ function fillDay() {
   daySelect.innerHTML = html;
 }
 
+function fillAge() {
+
+  let html = '<option value="" disabled selected>Select age group</option>';
+  let ages = [];
+  for (let { rating } of movies) {
+    if (!ages.includes(rating)) {
+      ages.push(rating);
+    }
+  }
+
+  for (let age of ages) {
+    html += `<option>${age}</option>`;
+  }
+
+  ageSelect.innerHTML = html;
+}
+
 function fillMovie() {
 
   let html = '<option value="" disabled selected>Select movie</option>';
@@ -107,13 +126,26 @@ function filterScreenings() {
     return Object.assign({}, screening, theaterWithEqualId)
   });
 
-  console.log(screeningsAndMoviesAndTheaters);
+
+  for (let i = 0; i < screeningsAndMoviesAndTheaters.length - 1; i++) {
+    let timeArray = [];
+    for (let j = i + 1; j < screeningsAndMoviesAndTheaters.length; j++) {
+      if ((screeningsAndMoviesAndTheaters[i].movieId === screeningsAndMoviesAndTheaters[j].movieId)
+        && (screeningsAndMoviesAndTheaters[i].theaterId === screeningsAndMoviesAndTheaters[j].theaterId)
+        && (screeningsAndMoviesAndTheaters[i].date === screeningsAndMoviesAndTheaters[j].date)) {
+        timeArray.push(screeningsAndMoviesAndTheaters[j].time);
+        screeningsAndMoviesAndTheaters.splice(j, 1);
+        j--;
+      }
+    }
+    timeArray.push(screeningsAndMoviesAndTheaters[i].time);
+    screeningsAndMoviesAndTheaters[i].time = timeArray;
+  }
+
 
   filteredScreenings = screeningsAndMoviesAndTheaters.filter(e => {
     return (!theaterSelect.value || e.name === theaterSelect.value) && (!daySelect.value || formatDate(e.date) === daySelect.value) && (!movieSelect.value || e.title === movieSelect.value);
   });
-
-  console.log(filteredScreenings);
 
   generateScreenings();
 
@@ -168,7 +200,6 @@ function playVideo(screeningId) {
 
   for (let iframe of iframes) {
     if (iframe.id == screeningId) {
-      console.log(iframe.id)
       iframe.classList.add("playingVideo");
       iframe.src = `http://www.imdb.com/video/imdb/${thisScreening.link.split("/").pop()}/imdb/embed`;
     }
@@ -184,26 +215,33 @@ async function generateScreenings(start = 0, end = 20) {
     partOfFilteredScreenings = filteredScreenings.slice(start, end);
   }
   for (let screening of partOfFilteredScreenings) {
-    let timeArray = screening.time.split(":");
-    let hr = timeArray[0];
-    let min = timeArray[1];
 
+    console.log(screening);
     html += `
     <div id="screening-container">
       <div class="movie-information">
         <h2>${screening.title}</h2>
         <p id="movie-plot">${screening.plot}</p>
-        <p>
-        <span class="info-screening">${screening.date}</span>
-        <span class="info-screening">${screening.duration}</span>
-        <span class="info-screening">${screening.name}</span>
+        <p class="info-screening">
+        <span>${formatDate(screening.date)}</span>
+        <span>${screening.duration}</span>
+        <span>${screening.name}</span>
         </p>
-        <div class="screening-times">
-          <div class="screening">
+        <div class="screening-times">`;
+
+
+    for (let time of screening.time) {
+      let timeArray = time.split(":");
+      let hr = timeArray[0];
+      let min = timeArray[1];
+
+      html += `<div class="screening">
             <h1 onclick="bookScreening(${screening.screeningId})">${hr}:${min}</h1>
             <p>Book this</p>
-          </div>
-        </div>
+          </div>`;
+    }
+
+    html += `</div>
       </div>
       <div class="movieMedia">
         <img
