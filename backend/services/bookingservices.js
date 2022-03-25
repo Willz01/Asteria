@@ -31,9 +31,11 @@ function updateBooking(req, res, next) {
   console.log(row);
 }
 
+// delete booking and research sets associated
 function deleteBooking(req, res, next) {
-  runQuery(res, {},
-    `DELETE FROM bookings WHERE bookingId = ${req.params.id}`, true);
+  const row = db.prepare('DELETE FROM bookings WHERE bookingId = ?').run(req.params.id)
+  res.send(row)
+  console.log(row);
 }
 
 //booking and reserved seats join on 
