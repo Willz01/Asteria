@@ -55,8 +55,8 @@ async function loadBookingsToTable() {
         }
       } else {
         if (counter === 0) {
-          pasthtml += `<tr class="xxx" id="graybooking">
-        <td><button id="${booking.bookingId}" onclick="deleteBooking(id)">delete</button></td> 
+          pasthtml += `<tr id="graybooking">
+        <td></td> 
         <td>${booking.title}</td >
         <td>${booking.theaterName}</td>
         <td>${booking.time}</td>
@@ -77,7 +77,7 @@ async function loadBookingsToTable() {
         </tr> `;
             if (counter != 0) {
               pasthtml += `<tr id="graybooking">
-            <td><button id="${booking.bookingId}" onclick="deleteBooking(id)">delete</button></td>
+            <td></td>
         <td>${booking.title}</td >
         <td>${booking.theaterName}</td>
         <td>${booking.time}</td>
