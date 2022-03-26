@@ -1,6 +1,7 @@
-
+let intervalId;
 
 document.querySelector('body').addEventListener('click', function (event) {
+  stopInterval();
   let aTag = event.target.closest('a');
 
   if (!aTag) {
@@ -20,6 +21,15 @@ document.querySelector('body').addEventListener('click', function (event) {
 
   router();
 });
+
+function startInterval() {
+  intervalId = setInterval(newBooking(), 20000);
+
+}
+
+function stopInterval() {
+  clearInterval(intervalId);
+}
 
 
 function makeMenuChoiceActive(route) {
@@ -43,6 +53,9 @@ async function router() {
   let route = location.pathname;
   console.log(route);
   makeMenuChoiceActive(route);
+  if (!isSavedSession() && (route === '/bookings')) {
+    route = '/signUp'
+  }
   // transform route to be a path to a partial
   route = route === '/' ? '/start' : route;
   route = '/views' + route + '.html';
@@ -58,8 +71,9 @@ async function router() {
   route === '/views/bookings.html' && loadBookingsToTable();
   route === '/views/findScreening.html' && fillSelections();
   route === '/views/signUp.html';
-  route === '/views/newbooking.html' && loadAndDisplayTheSeats();
+  route === '/views/newBooking.html' && startInterval();
   route === '/views/signUp.html' && handleAccount();
+  route = '/views/page-not-found.html';
 }
 
 if (isSavedSession()) {
@@ -80,10 +94,3 @@ window.addEventListener('popstate', router);
 // run the router on page load
 router();
 
-document.querySelector('.booking-btn').addEventListener('click', () => {
-  if (isSavedSession()) {
-
-  } else {
-    window.location.href = '/signUp'
-  }
-})

@@ -1,82 +1,103 @@
-const adultPrice = 100;
-const childPrice = 60;
-const seniorPrice = 65;
+async function reserveSeat(seatId) {
+  console.log(seatId)
+  let reservedSeats = getStorage("reservedSeats")
 
-function getTotal() {
-  let booking = getStorage("booking");
-  let total = 0;
-  if (booking.adults > 0) {
-    total += booking.adults * adultPrice;
+  if (reservedSeats != null) {
+    console.log
+    reservedSeats.push(seatId)
+  } else {
+    reservedSeats = [seatId]
   }
 
-  if (booking.children > 0) {
-    total += booking.children * childPrice;
-  }
-
-  if (booking.seniors > 0) {
-    total += booking.seniors * seniorPrice;
-  }
-  return total;
-
-}
-
-function randomId() {
-  return Math.floor((1 + Math.random()) * 0x10000)
-    .toString(16)
-    .substring(1);
-}
-
-function getStorage(key) {
-  return JSON.parse(window.sessionStorage.getItem(key));
-}
-
-function setStorage(key, value) {
-  window.sessionStorage.setItem(key, JSON.stringify(value));
-}
-
-
-async function reserveSeat(element) {
-  let seatId = element.id;
-  let user = getSavedSession();
-  let booking = getStorage("booking");
-  if (user === undefined) {
+  if (!isSavedSession()) {
     history.pushState(null, null, "http://localhost:5601/signUp");
-    await router();
-  }
+    router();
+  } else {
+    let user = JSON.parse(atob(getSavedSession()))
+    console.log(user.userId)
+    let booking = getStorage("booking");
+    let totalPersons = booking.adults + booking.children + booking.seniors;
+    console.log(totalPersons)
+    if (totalPersons + 1 > reservedSeats.length) {
+      let databaseBooking = await (await fetch("http://localhost:5600/api/bookings/" + booking.bookingId)).json();
+      console.log("db: " + databaseBooking)
 
-  let totalPersons = booking.adults + booking.children + booking.seniors;
-  if (totalPersons > 0) {
-    let databaseBooking = await (await fetch("http://localhost:5600/api/bookings/" + booking.bookingId)).json();
+      if (databaseBooking === null) {
+        await fetch("http://localhost:5600/api/bookings/new-booking", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "bookingId": booking.bookingId,
+            "userId": booking.userId,
+            "adults": booking.adults,
+            "children": booking.children,
+            "seniors": booking.seniors,
+          })
+        });
+      }
 
-    if (databaseBooking === undefined) {
-      await fetch("http://localhost:5600/api/bookings/new-booking", {
-        method: 'POST',
-        body: booking
-      });
+      let screening = getStorage("screening");
+      let reservation = await (await fetch("http://localhost:5600/api/bookings/full-booking/" + booking.bookingId)).json();
+      if (reservation != null && totalPersons > reservation.length) {
+        await fetch("http://localhost:5600/api/reservedseat/new-reservation", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "bookingId": booking.bookingId,
+            "screeningId": screening.screeningId,
+            "seatId": seatId,
+            "dateTime": Date.now(),
+            "isTemp": 1,
+          })
+        });
+      }
+      setStorage("reservedSeats", reservedSeats)
+      console.log(reservedSeats)
+      history.pushState(null, null, "/newBooking");
+      router();
+    } else {
+      alert("Please add tickets to add seats")
     }
-    let reservation = await (await fetch("http://localhost:5600/api/bookings/full-booking" + booking.bookingId)).json();
-    if (totalPersons > reservation.length) {
-      await fetch("http://localhost:5600/api/reservedseat/new-reservation", {
-        method: 'POST',
-        body: {
-          "bookingId": booking.bookingId,
-          "screeningId": screening.screeningId,
-          "seatId": seatId,
-          "dateTime": new Date(),
-          "isTemp": true
-        }
-
-      });
-    }
   }
-
-  newBooking();
 }
 
-async function unreserveSeat(element) {
-  let seatId = element.id;
-  await fetch("http://localhost:5600/api/reservedseat/" + seatId);
-  newBooking();
+async function unreserveSeat(seatId) {
+
+  const booking = getStorage("booking");
+  const reqBody = {
+    "bookingId": booking.bookingId,
+    "seatId": seatId,
+  }
+
+  let reservedSeats = getStorage("reservedSeats")
+  console.log(reservedSeats)
+  if (reservedSeats != null) {
+    console.log(reservedSeats)
+    for (let i = 0; i < reservedSeats.length; i++) {
+      const element = reservedSeats[i];
+      if (element === seatId) {
+        reservedSeats.splice(i, 1);
+      }
+    }
+  }
+
+  console.log(reservedSeats)
+  setStorage("reservedSeats", reservedSeats)
+  history.pushState(null, null, "/newBooking");
+  router();
+
+  await fetch("http://localhost:5600/api/reservedseat/delete", {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(reqBody)
+  });
+
 }
 
 async function increaseAttendees(type) {
@@ -89,7 +110,8 @@ async function increaseAttendees(type) {
     booking.seniors++;
   }
   setStorage("booking", booking);
-  newBooking();
+  history.pushState(null, null, "/newBooking");
+  router();
 }
 
 async function reduceAttendees(type) {
@@ -109,34 +131,97 @@ async function reduceAttendees(type) {
     }
   }
   setStorage("booking", booking);
-  newBooking();
+  history.pushState(null, null, "/newBooking");
+  router();
+}
+
+async function confirmBooking() {
+  let reservation = await (await fetch("http://localhost:5600/api/bookings/full-booking/" + booking.bookingId)).json();
+  if (reservation != null && totalPersons > reservation.length) {
+    await fetch("http://localhost:5600/api/reservedseat/new-reservation", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "bookingId": booking.bookingId,
+        "screeningId": screening.screeningId,
+        "seatId": seatId,
+        "dateTime": Date.now(),
+        "isTemp": 0,
+      })
+    });
+  }
 }
 
 async function newBooking() {
   let theaterScreening = document.querySelector(".new_booking");
   let screening = getStorage("screening");
-  console.log(screening);
-  window.addEventListener('resize', newBooking);
-
+  let reservedSeats = getStorage("reservedSeats")
   let booking = getStorage("booking");
-  let user = getSavedSession();
-  if (user != undefined) {
-    booking.userId = user.userId;
-    booking.id = randomId() + '-' + booking.userId + '-' + randomId();
+
+  if (isSavedSession()) {
+    let user = JSON.parse(atob(getSavedSession()))
+    if (booking.bookingId === '') {
+      booking.userId = user.userId;
+      booking.bookingId = randomId() + '-' + booking.userId + '-' + randomId();
+    }
   }
 
-  console.log(booking);
-
   setStorage("booking", booking);
+  window.addEventListener('resize', newBooking);
+
+  let allReservations = await (await fetch('http://localhost:5600/api/reservedseat/screening/' + screening.screeningId)).json();
+
+  for (let i = 0; i < allReservations.length; i++) {
+    let reservation = allReservations[i];
+    if (reservation.bookingId === booking.bookingId) {
+      console.log(reservation)
+      if (reservedSeats.length === 0) {
+        reservedSeats = [reservation.seatId];
+      } else {
+        reservedSeats.push(reservation.seatId);
+      }
+    }
+    if (reservation.isTemp === 1) {
+      let now = Date.now();
+      if (reservation.dateTime + (1000 * 60) * 5 < now) {
+        const reqBody = {
+          "seatId": reservation.seatId,
+          "screeningId": screening.screeningId
+        }
+
+        const response = await fetch("http://localhost:5600/api/screenings/removeSeatReservation", {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(reqBody)
+        });
+
+        await fetch('http://localhost:5600/api/bookings/' + reservation.bookingId, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: null
+        });
+      }
+    }
+  }
+
+  let timeArray = screening.time.split(":");
+  let hr = timeArray[0];
+  let min = timeArray[1];
 
   let html = `
   <div class="new_booking_header">
     <h1>${screening.title}</h1>
-    <h1>\t\t</h1>
+    
     <h2>Total price: ${getTotal()} SEK</h2>
   </div>
   <div class="new-_booking__header">
-    <h3>${screening.time}</h1>
+    <h3>${hr}:${min}</h1>
     <p>${screening.date} | ${screening.name}</p>
   </div>
 
@@ -162,70 +247,66 @@ async function newBooking() {
               <h1>${booking.seniors}</h1>
             </li>
           </ul>
+          <button class="confirm-button" onclick="confirmBooking()">Confirm Booking</button>
       </div>
       <div class="seats_container">
       <svg version="1.1" viewBox="0 0 500 600" 
-            preserveAspectRatio="xMidYMid meet" class="svg-content">
+            preserveAspectRatio="xMinYMin meet"" class="svg-content">
             `;
 
-  let allReservations = await (await fetch('http://localhost:5600/api/reservedseat/screening/' + screening.screeningId)).json();
-  let count = 1;
 
-  let seatArray = {};
-  let userSeats = {};
-  for (let reservation in allReservations) {
-    if (reservation.isTemp === true) {
-      let now = new Date();
-      console.log()
-      reservation.dateTime.setMinutes(reservation.dateTime.getMinutes() + 5);
-      if (reservation.dateTime > now) {
-        await fetch('http://localhost:5600/api/reservedseat/' + reservation.reservedSeatId);
-      } else {
 
-        if (booking.bookingId === reservation.bookingId) {
-          userSeats.add(seatId);
-        } else {
-          seatArray.add(seatId);
-        }
-      }
-
-    }
+  let sizing = 0;
+  let columnSize = (500) / (screening.mainColumns * 2);
+  let rowSize = (500) / (screening.mainRows * 2)
+  if (columnSize > rowSize) {
+    sizing = rowSize;
+  } else {
+    sizing = columnSize;
   }
-
-  let sizing = (500) / (screening.mainColumns * 2)
-  let y_pos = 50;
+  count = 1;
+  let y_pos = 25;
+  console.log(count);
   for (let row = 0; row < screening.mainRows; row++) {
     let x_pos = 20
     for (let column = 0; column < screening.mainColumns; column++) {
-      if (seatArray.length > 0) {
-        for (let seatId in seatArray) {
-          if (count === seatId) {
-            html += `<rect id="${count}" " fill="red" x="${x_pos}" height="${sizing}" y="${y_pos}"
+      console.log(allReservations.length)
+      let found = false;
+      console.log(reservedSeats)
+      if (reservedSeats != (undefined || null)) {
+        for (let i = 0; i < reservedSeats.length; i++) {
+          let reservedSeat = reservedSeats[i];
+          console.log(reservedSeat)
+          if (reservedSeat === count) {
+            html += `<rect fill="blue" x="${x_pos}" height="${sizing}" y="${y_pos}"
+            width="${sizing}" rx="4" onclick="unreserveSeat(${count})"/>`
+            found = true
+            break;
+          }
+        }
+      }
+      if (!found) {
+        for (let i = 0; i < allReservations.length; i++) {
+          let reservation = allReservations[i];
+          if (reservation.seatId === count) {
+            console.log("inside reservation.seatid === count")
+            if (reservation.bookingId != booking.bookingId) {
+              html += `<rect fill="grey" x="${x_pos}" height="${sizing}" y="${y_pos}"
             width="${sizing}" rx="4" />`
-
-            count++;
-            x_pos += sizing * 2;
-            continue;
+              found = true
+              break;
+            }
           }
         }
       }
 
-      if (userSeats.length > 0) {
-        for (let seatId in seatArray) {
-          if (count === seatId) {
-            html += `<rect id="${count}" " fill="blue" x="${x_pos}" height="${sizing}" y="${y_pos}"
-            width="${sizing}" rx="4" onclick="unreserveSeat(this)"/>`
-
-            count++;
-            x_pos += sizing * 2;
-            continue;
-          }
-        }
+      if (!found) {
+        html += `<rect fill="rgb(255, 225, 0)" x="${x_pos}" height="${sizing}" y="${y_pos}"
+          width="${sizing}" rx="4" onclick="reserveSeat(${count})"/>`;
       }
-      html += `<rect id="${count}" fill="#00000" x="${x_pos}" height="${sizing}" y="${y_pos}"
-        width="${sizing}" rx="4" onclick="reserveSeat(this)"/>`;
-      count++;
+      found = false;
       x_pos += sizing * 2
+      count++;
     }
     y_pos += sizing * 2;
   }
@@ -236,11 +317,5 @@ async function newBooking() {
   </div>`
 
   theaterScreening.innerHTML = html;
-}
-
-
-// Refresh or reload page.
-function refresh() {
-  window.location.reload();
 }
 

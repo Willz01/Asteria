@@ -66,6 +66,7 @@ table, th, td {
 }
 #graybooking{
   background-color: gray;
+  color:rgb(5, 5, 5);
 }
 .view_booking_container th{
  }

@@ -15,4 +15,6 @@ router.get('/:id', screeningServices.getScreeningById)
 // Admin create new screening
 router.post('/new-screening', screeningServices.newScreening)
 
+router.delete('/removeSeatReservation', screeningServices.deleteSeatReservation)
+
 module.exports = router

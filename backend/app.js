@@ -2,28 +2,23 @@ require('dotenv').config()
 const path = require('path')
 
 const express = require('express')
-
+let cors = require('cors')
 
 const app = express()
-app.use(express.json())
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+
+const allowedOrigins = ['http://localhost:5601'];
+const methods = ["GET", "PUT", "POST", "PATCH", "UPDATE", "HEAD", "OPTIONS", "DELETE"]
+const headers = ["Origin", "X-Requested-With", "Content-Type", "Accept"]
+
+
+app.use(cors({
+  origin: '*',
+  methods: methods,
+  headers: headers
+}));
+
+app.use(express.json());
 const PORT = 5600
-
-
-app.use(express.static(path.join(__dirname, '../', 'frontend')))
-
-// served pages '/start', '/bookings', '/signUp'
-app.use('/start', (req, res) => {
-  res.sendFile(path.join(
-    __dirname, '../',
-    'frontend',
-    'index.html'
-  ))
-})
 
 //* enpoints --routes
 
@@ -39,6 +34,12 @@ app.use('/api/theaters', theaterRouter)
 
 const bookingRouter = require('./router/bookingrouter')
 app.use('/api/bookings', bookingRouter)
+
+const screeningRouter = require('./router/screeningrouter')
+app.use('/api/screenings', screeningRouter)
+
+const reservedSeatRouter = require('./router/reservedseatrouter')
+app.use('/api/reservedseat', reservedSeatRouter)
 
 app.listen(PORT, () => {
   console.log(`Asteria server running @ PORT: ${PORT}`);

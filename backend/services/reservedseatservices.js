@@ -21,9 +21,10 @@ function getByBookingId(req, res, next) {
 // screeningId, date, time, theaterId, movieId
 function newReservation(req, res, next) {
   console.log(req.body)
-  runQuery(res, {},
-    `INSERT INTO reservedseats(reservedSeatId, bookingId, screeningId, seatId, dateTime, isTemp) VALUES(
-      ${req.body.reservedSeatId}, ${req.body.bookingId}, ${req.body.screeningId}, ${req.body.seatId}, ${req.body.dateTime}, ${req.body.isTemp})`);
+  const row = db.
+    prepare('INSERT INTO reservedseats(bookingId, screeningId, seatId, dateTime, isTemp) VALUES(?, ?, ?, ?, ?)')
+    .run(req.body.bookingId, req.body.screeningId, req.body.seatId, req.body.dateTime, req.body.isTemp);
+  console.log(row);
 }
 
 function updateReservation(req, res, next) {
@@ -38,9 +39,10 @@ function updateReservation(req, res, next) {
   `);
 }
 
-function deleteReservation(req, res, next) {
-  runQuery(res, {},
-    `DELETE FROM reservedseats WHERE reservedSeatId = ${req.params.id}`, true);
+function deleteSeatReservation(req, res, next) {
+  const row = db.prepare(
+    `DELETE FROM reservedseats WHERE seatId = ? AND bookingId = ?`).run(req.body.seatId, req.body.bookingId);
+  console.log(row)
 }
 
 function runQuery(res, parameters, sqlForPreparedStatement, onlyOne = false) {
@@ -67,4 +69,4 @@ exports.getByScreeningId = getByScreeningId
 exports.getByBookingId = getByBookingId
 exports.newReservation = newReservation
 exports.updateReservation = updateReservation
-exports.deleteReservation = deleteReservation
+exports.deleteSeatReservation = deleteSeatReservation
