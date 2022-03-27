@@ -136,22 +136,34 @@ async function reduceAttendees(type) {
 }
 
 async function confirmBooking() {
+  let screening = getStorage("screening")
+  let booking = getStorage("booking");
   let reservation = await (await fetch("http://localhost:5600/api/bookings/full-booking/" + booking.bookingId)).json();
-  if (reservation != null && totalPersons > reservation.length) {
+  if (booking.adults + booking.children + booking.seniors < 1) {
+    return;
+  }
+  for (let seatReservation in reservation) {
+    unreserveSeat(seatReservation.seatId);
+    console.log("seatId" + seatReservation.seatId)
     await fetch("http://localhost:5600/api/reservedseat/new-reservation", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        "bookingId": booking.bookingId,
+        "bookingId": booking.randomId,
         "screeningId": screening.screeningId,
-        "seatId": seatId,
+        "seatId": seatReservation.seatId,
         "dateTime": Date.now(),
         "isTemp": 0,
       })
     });
+
   }
+  window.sessionStorage.removeItem("reservedSeats")
+  window.sessionStorage.removeItem("booking")
+  history.pushState(null, null, "/");
+  router();
 }
 
 async function newBooking() {
