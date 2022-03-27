@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  padding-top: 40px;
+  margin: 0 40px ;
 }
 
 .movie-card {
@@ -50,6 +50,9 @@
 }
 
 @media only screen and (max-width: 480px) {
+  .movie-cards {
+    margin: 0;
+  }
 
   .movie-card {
     margin: 10px;

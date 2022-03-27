@@ -247,7 +247,7 @@ async function newBooking() {
               <h1>${booking.seniors}</h1>
             </li>
           </ul>
-          <button onclick="confirmBooking()">Confirm Booking</button>
+          <button class="confirm-button" onclick="confirmBooking()">Confirm Booking</button>
       </div>
       <div class="seats_container">
       <svg version="1.1" viewBox="0 0 500 600" 

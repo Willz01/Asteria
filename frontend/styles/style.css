@@ -24,7 +24,8 @@ body::-webkit-scrollbar {
 }
 
 main {
-  padding: 0 20%;
+  margin-top: 50px;
+  padding: 0 15%;
   width: auto;
   flex: 1;
 }
@@ -147,7 +148,8 @@ footer address {
 @media only screen and (max-width: 480px) {
 
   main {
-    padding: 0 20px;
+    margin-top: 20px;
+    padding: 0 10px;
   }
 
   .heading {
@@ -155,6 +157,7 @@ footer address {
   }
 
   .heading h1 {
+    padding-top: 20px;
     font-size: 40px;
   }
 
