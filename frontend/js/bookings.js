@@ -27,7 +27,7 @@ async function loadBookingsToTable() {
       console.log(day, currentMonth + "im here");
       if (month < currentMonth || month === currentMonth && day >= currentday) {
         if (counter === 0) {
-          html += `<tr>
+          html += ` <tbody> <tr>
         <td><button id="${booking.bookingId}" onclick="deleteBooking(id)">delete</button></td>
         <td>${booking.title}</td >
         <td>${booking.theaterName}</td>
@@ -55,7 +55,8 @@ async function loadBookingsToTable() {
         }
       } else {
         if (counter === 0) {
-          pasthtml += `<tr id="graybooking">
+          pasthtml += ` <tbody>
+          <tr id="graybooking">
         <td></td> 
         <td>${booking.title}</td >
         <td>${booking.theaterName}</td>
@@ -97,6 +98,7 @@ async function loadBookingsToTable() {
       console.log(booking)
 
     }
+    pasthtml += `</tbody>`;
     document.querySelector('.view_booking_container').innerHTML += html;
     document.querySelector('.view_booking_container').innerHTML += pasthtml;
     console.log(counter);
