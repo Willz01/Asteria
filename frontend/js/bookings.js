@@ -4,7 +4,7 @@ async function loadBookingsToTable() {
   let userObject = JSON.parse(atob(getSavedSession()));
   let userID = userObject.userId
   console.log(userID);
-  let data = await (await fetch(`http://127.0.0.1:5600/api/users/4/bookings-info`)).json()
+  let data = await (await fetch(`http://127.0.0.1:5600/api/users/${userID}/bookings-info`)).json()
 
   if (data.length === 0) {
     document.querySelector('.view_booking_container').innerHTML += 'No bookings';
@@ -17,15 +17,17 @@ async function loadBookingsToTable() {
     let counter = 0;
     let day = new Date();
     let month = new Date(); // jan = 0
-    let currentday = new Date().getDay();
+    let currentday = new Date().getDate();
     let currentMonth = new Date().getMonth() + 1;
+    let m = new Date();
     console.log(currentday, currentMonth + " checking date");
     for (let booking of data) {
 
-      day = new Date(booking.Date).getDay();
-      month = new Date(booking.Date).getMonth() + 1;
+      day = new Date(booking.date).getDate();
+      month = new Date(booking.date).getMonth() + 1;
       console.log(day, month + "loop date");
-      if (month < currentMonth || month === currentMonth && day >= currentday) {
+      if (month > currentMonth || month === currentMonth && day >= currentday) {
+        //   if (booking.date > m) {
         if (counter === 0) {
           html += ` <tbody> <tr>
         <td><button id="${booking.bookingId}" onclick="deleteBooking(id)">delete</button></td>
