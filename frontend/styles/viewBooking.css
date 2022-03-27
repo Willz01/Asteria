@@ -98,6 +98,7 @@
     display: flex;
     flex: 1;
     padding: .5em;
+    color: black;
 }
 @media screen and (max-width: 640px) {
     .view_booking_container {
@@ -123,7 +124,7 @@
         margin: -.5em -.5em .75em -.5em;
         padding: .5em;
         content: attr(data-label);
-        color: #fff;
+        color: rgb(0, 0, 0);
         background: #e9da11;
     }
 }
