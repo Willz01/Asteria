@@ -19,12 +19,12 @@ async function loadBookingsToTable() {
     let month = new Date(); // jan = 0
     let currentday = new Date().getDay();
     let currentMonth = new Date().getMonth() + 1;
-    console.log(currentday, currentMonth + "im here");
+    console.log(currentday, currentMonth + " checking date");
     for (let booking of data) {
 
       day = new Date(booking.Date).getDay();
       month = new Date(booking.Date).getMonth() + 1;
-      console.log(day, currentMonth + "im here");
+      console.log(day, month + "loop date");
       if (month < currentMonth || month === currentMonth && day >= currentday) {
         if (counter === 0) {
           html += ` <tbody> <tr>
@@ -47,7 +47,16 @@ async function loadBookingsToTable() {
             html += `</td> 
         </tr> `;
             if (counter != 0) {
-              html += htmlBase;
+              html += ` <tbody> <tr>
+        <td><button id="${booking.bookingId}" onclick="deleteBooking(id)">delete</button></td>
+        <td>${booking.title}</td >
+        <td>${booking.theaterName}</td>
+        <td>${booking.time}</td>
+        <td>${booking.date}</td>
+        <td>${booking.adults}</td>
+        <td>${booking.children}</td>
+        <td>${booking.seniors}</td>
+        <td>${booking.reservedSeat}`;
               console.log(currentBookingId + "if statment for counr!=0" + counter)
               currentBookingId = booking.bookingId;
             }
@@ -75,7 +84,7 @@ async function loadBookingsToTable() {
             console.log(currentBookingId + "else there is another seatt :" + counter)
             pasthtml += `</td>
           
-        </tr> `;
+        </td> `;
             if (counter != 0) {
               pasthtml += `<tr id="graybooking">
             <td></td>
